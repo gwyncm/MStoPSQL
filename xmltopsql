@@ -1,0 +1,15 @@
+#! /bin/bash
+# This script runs the xml to postgres copy conversion
+# Copyright (2008) Gwyneth Morrison   
+
+if [ $# -lt 1 ]
+then
+	echo Usage $0 XMLFILE
+	exit 1
+fi
+
+XMLFILE=$1
+
+echo Creating COPY file from $XMLFILE
+
+./xmltopsql.py $1  > xmlload.sql 

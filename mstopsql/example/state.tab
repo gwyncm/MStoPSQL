@@ -1,0 +1,1945 @@
+
+def addAllCases() :
+
+  addCase(0   ,drop    , 2800,  0   , "identity_insert",   "# delete? ")
+  addCase(0   ,drop    , 3000,  INFO, "ansi_padding",      "# delete? ")
+  addCase(0   ,drop    , 0   ,  0   , "textimage_on",      "# delete? ")
+  addCase(0   ,drop    , 0   ,  0   , "on",                "# delete? ")
+  addCase(0   ,drop    , 0   ,  0   , "primary",           "# delete? ")
+  addCase(0   ,call    , 1000,  0   , "create",            "# create ")
+  addCase(0   ,call    , 1400,  0   , "select",            "# select")
+  addCase(0   ,call    , 1800,  0   , "raiserror",         "# raise exception")
+  addCase(0   ,call    , 1900,  0   , "drop",              "# drop")
+  addCase(0   ,call    , 2000,  0   , "truncate",          "# truncate")
+  addCase(0   ,call    , 2100,  0   , "print",             "# raise info")
+  addCase(0   ,call    , 2200,  0   , "if",                "# if")
+  addCase(0   ,emit    , 0   ,  0   , "else",              "# else")
+  addCase(0   ,repl    , 0   ,  0   , "break",             "exit;")
+  addCase(0   ,jump    , 3700,  0   , "begin",             "# begin")
+  addCase(0   ,jump    , 3800,  0   , "end",               "# end")
+  addCase(0   ,drop    , 0   ,  UNSP, "commit",            "# commit")
+  addCase(0   ,repl    , 0   ,  0   , "rollback",          "raise exception 'ROLLBACK';")
+  addCase(0   ,drop    , 0   ,  0   , "transaction",       "# transaction")
+  addCase(0   ,drop    , 0   ,  0   , "tran",              "# tran")
+  addCase(0   ,procend , 0   ,  0   , "go",                "# go")
+  addCase(0   ,drop    , 0   ,  0   , ";",                 "# ;")
+  addCase(0   ,begdcl  , 2300,  0   , "declare",           "# declare")
+  addCase(0   ,call    , 2400,  0   , "open",              "# open")
+  addCase(0   ,call    , 2400,  0   , "close",             "# close")
+  addCase(0   ,call    , 2500,  0   , "deallocate",        "# deallocate")
+  addCase(0   ,call    , 2600,  0   , "fetch",             "# fetch")
+  addCase(0   ,call    , 2700,  0   , "set",               "# set")
+  addCase(0   ,call    , 3100,  0   , "while",             "# while")
+  addCase(0   ,call    , 3200,  0   , "exec",              "# exec")
+  addCase(0   ,call    , 3200,  0   , "execute",           "# exeutec")
+  addCase(0   ,call    , 3300,  0   , "insert",            "# insert")
+  addCase(0   ,call    , 3400,  0   , "return",            "# return")
+  addCase(0   ,call    , 3500,  0   , "update",            "# update")
+  addCase(0   ,call    , 3600,  0   , "use",               "# use")
+  addCase(0   ,call    , 3900,  0   , "alter",             "# alter")
+  addCase(0   ,call    , 4200,  0   , "delete",            "# delete")
+
+  addCase(70  ,prtlim  , 71  ,  1   , "<any>",             "# end of select list")
+
+  addCase(71  ,skip    , 0   ,  0   , "<any>",             "# end of select list")
+
+  addCase(80  ,isrt    , 81  ,  0   , "end; $$ language plpgsql", "# end of proc")
+
+  addCase(81  ,triggen , 0   ,  0   , "<any>",             "# end of trigger")
+
+  addCase(90  ,isrt    , 91  ,  0   , "return null; end; $$ language plpgsql", "# end of proc")
+
+  addCase(91  ,triggen , 0   ,  0   , "<any>",             "# end of trigger")
+
+  addCase(95  ,isrt    , 96  ,  0   , "as",                "# replace convert type ")
+
+  addCase(96  ,popall  , 97  ,  0   , "<any>",             "# ")
+
+  addCase(97  ,isrt    , 98  ,  0   , ")",                 "# ")
+
+  addCase(98  ,skip    , 0   ,  0   , "<any>",             "# ")
+
+# create
+
+  addCase(1000,emit    , 1005,  0   , "create",            "############ create")
+
+  addCase(1005,emit    , 1010,  0   , "table",             "# create table")
+  addCase(1005,emit    , 1055,  0   , "view",              "# create view")
+  addCase(1005,repl    , 1225,  0   , "procedure",         "function")
+  addCase(1005,emit    , 1225,  0   , "function",          "# function")
+  addCase(1005,drop    , 1325,  0   , "trigger",           "# trigger")
+  addCase(1005,drop    , 1005,  INFO, "clustered",         "# ")
+  addCase(1005,drop    , 1005,  0   , "nonclustered",      "# ")
+  addCase(1005,emit    , 1005,  0   , "unique",            "# ")
+  addCase(1005,emit    , 1005,  0   , "or",                "# ")
+  addCase(1005,emit    , 1005,  0   , "replace",           "# ")
+  addCase(1005,emit    , 1205,  0   , "index",             "# create index")
+
+  addCase(1010,emit    , 1020,  0   , "(",                 "# missing name")
+  addCase(1010,tabname , 1015,  0   , "<value>",           "# table name ")
+
+  addCase(1015,emit    , 1020,  0   , "(",                 "# ")
+  addCase(1015,emit    , 1010,  0   , ".",                 "# schema.table")
+
+  addCase(1020,emit    , 1190,  0   , ")",                 "# ")
+  addCase(1020,emit    , 1180,  0   , "constraint",        "# ")
+  addCase(1020,emit    , 1190,  0   , "primary",           "# ")
+  addCase(1020,drop    , 1020,  0   , "asc",               "# ")
+  addCase(1020,repl    , 1025,  0   , "user",              "\"user\"")
+  addCase(1020,repl    , 1025,  0   , "offset",            "\"offset\"")
+  addCase(1020,tabcol  , 1025,  0   , "<value>",           "# column name")
+
+  addCase(1025,repl    , 1030,  0   , "tinyint",           "smallint")
+  addCase(1025,repl    , 1030,  0   , "datetime",          "timestamp")
+  addCase(1025,repl    , 1030,  0   , "nvarchar",          "varchar")
+  addCase(1025,repl    , 1030,  0   , "varbinary",         "bit varying")
+  addCase(1025,repl    , 1030,  0   , "money",             "numeric(19,4)")
+  addCase(1025,repl    , 1030,  0   , "bit",               "boolean")
+  addCase(1025,repl    , 1030,  0   , "ntext",             "text")
+  addCase(1025,repl    , 1030,  0   , "uniqueidentifier",  "uuid")
+  addCase(1025,emit    , 1030,  0   , "<value>",           "# column type")
+
+  addCase(1030,emit    , 1020,  0   , ",",                 "# ")
+  addCase(1030,callem  , 1040,  0   , "(",                 "# ")
+  addCase(1030,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1030,emit    , 1030,  0   , "not",               "# ")
+  addCase(1030,emit    , 1030,  0   , "null",              "# ")
+  addCase(1030,drop    , 1030,  INFO, "rowguidcol",        "# ")
+  addCase(1030,repl    , 1030,  0   , "identity",          "default identity")
+  addCase(1030,drop    , 1050,  0   , "collate",           "# ")
+  addCase(1030,call    , 1080,  0   , "constraint",        "# ")
+  addCase(1030,drop    , 1035,  0   , "on",                "# ")
+  addCase(1030,emit    , 1190,  0   , "primary",           "# ")
+  addCase(1030,call    , 1095,  0   , "default",           "# ")
+  addCase(1030,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1035,drop    , 1030,  0   , "primary",           "# ")
+
+  addCase(1040,call    , 1400,  1045, "select",            "# ")
+  addCase(1040,emit    , 1045,  0   , "<value>",           "# column size")
+
+  addCase(1045,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1045,callem  , 1045,  0   , "(",                 "# function")
+  addCase(1045,emit    , 1040,  0   , ",",                 "# ")
+  addCase(1045,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1050,drop    , 1030,  0   , "<value>",           "# collate")
+
+  addCase(1055,emit    , 1060,  0   , "<value>",           "# view name ")
+
+  addCase(1060,drop    , 1060,  0   , "with",              "# ")
+  addCase(1060,drop    , 1060,  0   , "schemabinding",     "# ")
+  addCase(1060,emit    , 1065,  0   , "as",                "# ")
+  addCase(1060,emit    , 1070,  0   , "(",                 "# ")
+  addCase(1060,emit    , 1055,  0   , ".",                 "# ")
+  addCase(1060,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1065,call    , 1400,  0   , "select",            "# ")
+  addCase(1065,emit    , 1065,  0   , "union",             "# ")
+  addCase(1065,emit    , 1055,  0   , "as",                "# ")
+  addCase(1065,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1070,emit    , 1075,  0   , "<value>",           "# view colname ")
+
+  addCase(1075,emit    , 1070,  0   , ",",                 "# ")
+  addCase(1075,emit    , 1065,  0   , ")",                 "# ")
+
+  addCase(1080,drop    , 1085,  0   , "constraint",        "# ")
+
+  addCase(1085,save    , 1090,  0   , "<value>",           "# constraint name")
+
+  addCase(1090,emit    , 1105,  0   , "default",           "# ")
+  addCase(1090,save    , 1125,  0   , "check",             "# ")
+  addCase(1090,save    , 1140,  0   , "primary",           "# ")
+  addCase(1090,save    , 1140,  0   , "unique",            "# ")
+  addCase(1090,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1095,emit    , 1100,  0   , "default",           "############ default ")
+
+  addCase(1100,callem  , 1100,  0   , "(",                 "# ")
+  addCase(1100,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1100,emit    , 1100,  0   , "-",                 "# ")
+  addCase(1100,skip    , 0   ,  0   , ",",                 "# ")
+  addCase(1100,drop    , 1085,  0   , "constraint",        "# ")
+  addCase(1100,repl    , 1110,  INFO, "'8.0.7'",           "0")
+  addCase(1100,emit    , 1110,  0   , "<value>",           "# ")
+
+  addCase(1105,clear   , 1100,  0   , "<any>",             "# ")
+
+  addCase(1110,callem  , 1115,  0   , "(",                 "# function")
+  addCase(1110,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1110,emit    , 1100,  0   , ".",                 "# ")
+  addCase(1110,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1115,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1115,emit    , 1120,  0   , "<value>",           "# ")
+
+  addCase(1120,emit    , 1115,  0   , ",",                 "# ")
+  addCase(1120,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(1125,isrt    , 1130,  0   , "constraint",        "# ")
+
+  addCase(1130,popall  , 1135,  0   , "<any>",             "# ")
+
+  addCase(1135,callem  , 1135,  1030, "(",                 "# check")
+  addCase(1135,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1135,emit    , 1135,  0   , "<value>",           "# ")
+
+  addCase(1140,save    , 1145,  0   , "key",               "# ")
+  addCase(1140,drop    , 1140,  0   , "nonclustered",      "# ")
+  addCase(1140,drop    , 1140,  0   , "clustered",         "# ")
+
+  addCase(1145,drop    , 1145,  0   , "nonclustered",      "# ")
+  addCase(1145,drop    , 1145,  0   , "clustered",         "# ")
+  addCase(1145,drop    , 1155,  0   , "(",                 "# table constraint")
+  addCase(1145,isrt    , 1150,  0   , "constraint",        "# ")
+
+  addCase(1150,popall  , 1190,  0   , "<any>",             "# ")
+
+  addCase(1155,isrt    , 1160,  0   , ", constraint",      "# ")
+
+  addCase(1160,popall  , 1165,  0   , "<any>",             "# ")
+
+  addCase(1165,isrt    , 1170,  0   , "(",                 "# ")
+
+  addCase(1170,emit    , 1175,  0   , "<value>",           "# ")
+
+  addCase(1175,call    , 1020,  1190, "<any>",             "# ")
+
+  addCase(1180,emit    , 1185,  0   , "<value>",           "# constraint name")
+
+  addCase(1185,emit    , 1135,  0   , "check",             "# ")
+  addCase(1185,emit    , 1190,  0   , "primary",           "# ")
+  addCase(1185,emit    , 1190,  0   , "unique",            "# ")
+  addCase(1185,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1190,emit    , 1190,  0   , "key",               "# primary key")
+  addCase(1190,drop    , 1190,  0   , "clustered",         "# ")
+  addCase(1190,drop    , 1190,  0   , "nonclustered",      "# ")
+  addCase(1190,emit    , 1190,  0   , "unique",            "# ")
+  addCase(1190,callem  , 1195,  0   , "(",                 "# ")
+  addCase(1190,drop    , 1190,  0   , "on",                "# ")
+  addCase(1190,drop    , 1190,  0   , "textimage_on",      "# ")
+  addCase(1190,drop    , 1190,  0   , "primary",           "# ")
+  addCase(1190,emit    , 1020,  0   , ",",                 "# ")
+  addCase(1190,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1190,call    , 1355,  0   , "with",              "# unsupported ")
+  addCase(1190,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1195,emit    , 1200,  0   , "<value>",           "# ")
+
+  addCase(1200,drop    , 1200,  0   , "asc",               "# ")
+  addCase(1200,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1200,emit    , 1195,  0   , ",",                 "# ")
+
+  addCase(1205,emit    , 1210,  0   , "on",                "# index")
+  addCase(1205,emit    , 1205,  0   , "<value>",           "# ")
+
+  addCase(1210,emit    , 1215,  0   , "(",                 "# ")
+  addCase(1210,emit    , 1210,  0   , ".",                 "# ")
+  addCase(1210,emit    , 1210,  0   , "<value>",           "# ")
+
+  addCase(1215,emit    , 1215,  0   , ",",                 "# ")
+  addCase(1215,emit    , 1220,  0   , ")",                 "# ")
+  addCase(1215,emit    , 1215,  0   , "<value>",           "# ")
+
+  addCase(1220,call    , 1355,  0   , "with",              "# unsupported ")
+  addCase(1220,drop    , 1220,  0   , "on",                "# ")
+  addCase(1220,drop    , 1220,  0   , "primary",           "# ")
+  addCase(1220,call    , 1355,  0   , "include",           "# unsupported")
+  addCase(1220,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1225,procset , 1230,  0   , "<value>",           "# procedure name")
+
+  addCase(1230,drop    , 1270,  0   , "as",                "# no parameters")
+  addCase(1230,drop    , 1230,  0   , "(",                 "# ")
+  addCase(1230,drop    , 1270,  0   , ")",                 "# ")
+  addCase(1230,parmnew , 1235,  0   , "<value>",           "# parameter name")
+
+  addCase(1235,parmrep , 1250,  0   , "nvarchar",          "varchar")
+  addCase(1235,parmrep , 1250,  0   , "uniqueidentifier",  "uuid")
+  addCase(1235,parmrep , 1250,  0   , "datetime",          "timestamp")
+  addCase(1235,parmrep , 1250,  0   , "sql_variant",       "varchar")
+  addCase(1235,parmrep , 1250,  0   , "varbinary",         "bit varying")
+  addCase(1235,parmrep , 1250,  0   , "ntext",             "text")
+  addCase(1235,parmrep , 1250,  0   , "tinyint",           "smallint")
+  addCase(1235,parmrep , 1250,  0   , "bit",               "boolean")
+  addCase(1235,parmrep , 1250,  UNSP, "sysname",           "varchar(128)")
+  addCase(1235,drop    , 1235,  0   , "as",                "# is valid in MS")
+  addCase(1235,drop    , 1240,  0   , "returns",           "# ")
+  addCase(1235,prmtype , 1250,  0   , "<value>",           "# type")
+
+  addCase(1240,emit    , 1245,  0   , "table",             "# ")
+  addCase(1240,drop    , 1270,  0   , "as",                "# ")
+  addCase(1240,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1240,procret , 1240,  0   , "<value>",           "# return type")
+
+  addCase(1245,call    , 1010,  1240, "<any>",             "############ returns table ")
+
+  addCase(1250,drop    , 1280,  0   , "(",                 "# size")
+  addCase(1250,drop    , 1255,  0   , "=",                 "# default")
+  addCase(1250,parmout , 1250,  0   , "output",            "# output parameter      ")
+  addCase(1250,drop    , 1270,  0   , "as",                "# ")
+  addCase(1250,drop    , 1265,  0   , ")",                 "# ")
+  addCase(1250,parmadd , 1260,  0   , "<any>",             "# ")
+
+  addCase(1255,drop    , 1255,  0   , "-",                 "# ")
+  addCase(1255,drop    , 1250,  0   , "<value>",           "# ")
+
+  addCase(1260,drop    , 1230,  0   , ",",                 "# ")
+  addCase(1260,emit    , 1240,  0   , "returns",           "# ")
+  addCase(1260,emit    , 1265,  0   , ")",                 "# ")
+
+  addCase(1265,drop    , 1295,  0   , "returns",           "# ")
+  addCase(1265,drop    , 1270,  0   , "as",                "# ")
+
+  addCase(1270,drop    , 1270,  0   , "as",                "# ")
+  addCase(1270,drop    , 1295,  0   , "returns",           "# returns given")
+  addCase(1270,prmisrt , 1275,  0   , "<any>",             "# insert parameter list")
+
+  addCase(1275,call    , 0   ,  80  , "<any>",             "# procedure definition")
+
+  addCase(1280,prmsize , 1285,  UNSP, "max",               "# size given")
+  addCase(1280,prmsize , 1285,  0   , "<value>",           "# size given")
+
+  addCase(1285,parmout , 1285,  0   , "output",            "# ")
+  addCase(1285,drop    , 1290,  0   , "=",                 "# ")
+  addCase(1285,drop    , 1285,  0   , ")",                 "# ")
+  addCase(1285,drop    , 1270,  0   , "as",                "# ")
+  addCase(1285,drop    , 1295,  0   , "returns",           "# ")
+  addCase(1285,parmadd , 1260,  0   , "<any>",             "# add paramater ")
+
+  addCase(1290,drop    , 1285,  0   , "<value>",           "# ")
+
+  addCase(1295,procrep , 1300,  0   , "table",             "setof record")
+  addCase(1295,procret , 1300,  0   , "int",               "# ")
+  addCase(1295,procrep , 1300,  0   , "bit",               "boolean")
+  addCase(1295,procrep , 1300,  0   , "datetime",          "timestamp")
+  addCase(1295,procret , 1300,  0   , "float",             "# ")
+  addCase(1295,procrep , 1300,  0   , "nvarchar",          "varchar")
+  addCase(1295,procret , 1300,  0   , "varchar",           "# ")
+  addCase(1295,procret , 1300,  0   , "bigint",            "# ")
+  addCase(1295,procrep , 1300,  0   , "uniqueidentifier",  "uuid")
+  addCase(1295,drop    , 1270,  0   , "as",                "# ")
+  addCase(1295,procret , 1305,  0   , "<value>",           "# table name")
+
+  addCase(1300,drop    , 1300,  0   , "(",                 "# ")
+  addCase(1300,drop    , 1300,  0   , ")",                 "# ")
+  addCase(1300,drop    , 1300,  0   , "with",              "# ")
+  addCase(1300,drop    , 1300,  0   , "schemabinding",     "# ")
+  addCase(1300,drop    , 1270,  0   , "as",                "# ")
+  addCase(1300,drop    , 1300,  0   , "<value>",           "# ")
+
+  addCase(1305,procrep , 1310,  0   , "table",             "setof record")
+  addCase(1305,repl    , 1305,  0   , "as",                ";")
+  addCase(1305,drop    , 1305,  0   , "with",              "# ")
+  addCase(1305,drop    , 1305,  0   , "schemabinding",     "# ")
+  addCase(1305,call    , 0   ,  80  , "<any>",             "# ")
+
+  addCase(1310,prmisrt , 1315,  0   , "<any>",             "# ")
+
+  addCase(1315,isrt    , 1320,  0   , "create temp table bogus", "# ")
+
+  addCase(1320,callem  , 1020,  0   , "(",                 "# ")
+  addCase(1320,drop    , 1320,  0   , "with",              "# ")
+  addCase(1320,drop    , 1320,  0   , "schemabinding",     "# ")
+  addCase(1320,drop    , 1320,  0   , "as",                "# ")
+  addCase(1320,isrt    , 1305,  0   , ";",                 "# ")
+
+  addCase(1325,drop    , 1330,  0   , "on",                "# ")
+  addCase(1325,triglog , 1325,  0   , "<value>",           "# trigger name")
+
+  addCase(1330,triglog , 1335,  1   , "<value>",           "# table name")
+
+  addCase(1335,drop    , 1340,  0   , "as",                "# on ")
+  addCase(1335,triglog , 1335,  2   , "for",               "# ")
+  addCase(1335,drop    , 1335,  0   , "of",                "# ")
+  addCase(1335,triglog , 1335,  2   , "instead",           "# ")
+  addCase(1335,triglog , 1335,  2   , "after",             "# ")
+  addCase(1335,triglog , 1335,  2   , "before",            "# ")
+  addCase(1335,triglog , 1335,  3   , "delete",            "# ")
+  addCase(1335,triglog , 1335,  3   , "insert",            "# ")
+  addCase(1335,triglog , 1335,  3   , "update",            "# ")
+  addCase(1335,drop    , 1335,  0   , ",",                 "# ")
+  addCase(1335,drop    , 1335,  0   , "<value>",           "# ")
+
+  addCase(1340,isrt    , 1345,  0   , "function",          "# ")
+
+  addCase(1345,trighed , 1350,  0   , "<any>",             "# ")
+
+  addCase(1350,call    , 0   ,  90  , "<any>",             "# ")
+
+  addCase(1355,drop    , 1360,  UNSP, "with",              "# UNSUPPORTED")
+  addCase(1355,drop    , 1360,  UNSP, "include",           "# UNSUPPORTED")
+
+  addCase(1360,call    , 1365,  0   , "(",                 "# delete with")
+  addCase(1360,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1365,drop    , 1370,  0   , "(",                 "# ")
+
+  addCase(1370,drop    , 1375,  0   , ")",                 "# ")
+  addCase(1370,call    , 1365,  0   , "(",                 "# ")
+  addCase(1370,drop    , 1370,  0   , "<any>",             "# ")
+
+  addCase(1375,skip    , 0   ,  0   , "<any>",             "# ")
+
+# select
+
+  addCase(1400,emit    , 1405,  0   , "select",            "############ select")
+
+  addCase(1405,call    , 1410,  70  , "<any>",             "# ")
+
+  addCase(1410,emit    , 1460,  0   , "*",                 "############ select list")
+  addCase(1410,emit    , 1415,  0   , "into",              "# ")
+  addCase(1410,drop    , 1460,  0   , "as",                "# as ? ")
+  addCase(1410,prtinto , 1500,  0   , "from",              "# from ?")
+  addCase(1410,repl    , 1460,  0   , "db_name",           "current_database")
+  addCase(1410,drop    , 1450,  0   , "top",               "# ")
+  addCase(1410,callem  , 1420,  1460, "(",                 "# ")
+  addCase(1410,call    , 1630,  1460, "case",              "# ")
+  addCase(1410,emit    , 1410,  0   , "-",                 "# ")
+  addCase(1410,call    , 1660,  1460, "replace",           "# ")
+  addCase(1410,emit    , 1410,  0   , "distinct",          "# ")
+  addCase(1410,call    , 1435,  1460, "dateadd",           "# ")
+  addCase(1410,call    , 1435,  1460, "datepart",          "# ")
+  addCase(1410,call    , 2840,  1460, "convert",           "# ")
+  addCase(1410,call    , 2115,  1460, "cast",              "# ")
+  addCase(1410,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1410,savinto , 1430,  0   , "<symbol>",          "# symbol ")
+  addCase(1410,repl    , 1460,  0   , "user",              "\"user\"")
+  addCase(1410,repl    , 1460,  0   , "offset",            "\"offset\"")
+  addCase(1410,repl    , 1460,  UNSP, "'00000000-0000-0000-0000-000000000000'", "cast ('00000000-0000-0000-0000-000000000000' as uuid )")
+  addCase(1410,emit    , 1460,  UNSP, "null",              "# uncast null")
+  addCase(1410,procref , 1460,  0   , "<value>",           "# colname ")
+
+  addCase(1415,emit    , 1410,  0   , "<value>",           "############ into variable ")
+
+  addCase(1420,subsel  , 1425,  1   , "select",            "# ")
+  addCase(1420,jump    , 1410,  0   , "<any>",             "# ")
+
+  addCase(1425,call    , 1400,  0   , "select",            "# ")
+  addCase(1425,subsel  , 1410,  0   , "<any>",             "# ")
+
+  addCase(1430,drop    , 1410,  0   , "=",                 "############ col assign")
+  addCase(1430,lodinto , 1460,  0   , "<any>",             "# ")
+
+  addCase(1435,emit    , 1440,  0   , "dateadd",           "# ")
+  addCase(1435,emit    , 1440,  0   , "datepart",          "# ")
+
+  addCase(1440,emit    , 1445,  0   , "(",                 "# ")
+
+  addCase(1445,repl    , 1495,  0   , "s",                 "'s'")
+  addCase(1445,repl    , 1495,  0   , "hour",              "'hour'")
+  addCase(1445,repl    , 1495,  0   , "minute",            "'minute'")
+  addCase(1445,emit    , 1495,  0   , "<any>",             "# ")
+
+  addCase(1450,drop    , 1450,  0   , "(",                 "########### top limit")
+  addCase(1450,prtlim  , 1455,  0   , "<value>",           "# set limit ")
+
+  addCase(1455,drop    , 1410,  UNSP, "percent",           "########### top percent")
+  addCase(1455,drop    , 1410,  0   , ")",                 "# ")
+  addCase(1455,jump    , 1410,  0   , "<any>",             "# ")
+
+  addCase(1460,emit    , 1410,  0   , "+",                 "########### select list operator")
+  addCase(1460,emit    , 1410,  0   , "-",                 "# ")
+  addCase(1460,emit    , 1410,  0   , "/",                 "# ")
+  addCase(1460,emit    , 1410,  0   , "?",                 "# ")
+  addCase(1460,emit    , 1410,  0   , "*",                 "# ")
+  addCase(1460,emit    , 1410,  0   , "=",                 "# assignment")
+  addCase(1460,emit    , 1410,  0   , ".",                 "# ")
+  addCase(1460,emit    , 1410,  0   , ",",                 "# ")
+  addCase(1460,procref , 1465,  1   , "(",                 "# function reference")
+  addCase(1460,rtnem   , 0   ,  0   , ")",                 "# end expr")
+  addCase(1460,emit    , 1410,  0   , "into",              "# columns")
+  addCase(1460,prtinto , 1500,  0   , "from",              "# ")
+  addCase(1460,drop    , 1460,  UNSP, "collate",           "# ")
+  addCase(1460,drop    , 1460,  0   , "as",                "# ")
+  addCase(1460,prtinto , 1480,  0   , "<key>",             "# ")
+  addCase(1460,prtas   , 1475,  0   , "<any>",             "# ")
+
+  addCase(1465,drop    , 1470,  0   , "(",                 "# function")
+
+  addCase(1470,call    , 1490,  1460, "<any>",             "# function")
+
+  addCase(1475,join    , 1485,  0   , "<value>",           "############ as name")
+
+  addCase(1480,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1485,emit    , 1410,  0   , ",",                 "############ select list continued")
+  addCase(1485,prtinto , 1500,  0   , "from",              "# ")
+  addCase(1485,emit    , 1410,  0   , "into",              "# columns")
+  addCase(1485,callem  , 1490,  0   , "(",                 "# function")
+  addCase(1485,rtnem   , 0   ,  0   , ")",                 "# end expr")
+  addCase(1485,emit    , 1410,  0   , "+",                 "# ")
+  addCase(1485,emit    , 1410,  0   , "-",                 "# ")
+  addCase(1485,emit    , 1410,  0   , "/",                 "# ")
+  addCase(1485,emit    , 1410,  0   , "?",                 "# ")
+  addCase(1485,emit    , 1410,  0   , "*",                 "# ")
+  addCase(1485,emit    , 1410,  0   , "=",                 "# assignment")
+  addCase(1485,emit    , 1410,  0   , ".",                 "# ")
+  addCase(1485,call    , 1630,  0   , "case",              "# ")
+  addCase(1485,drop    , 1460,  UNSP, "collate",           "# ")
+  addCase(1485,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1485,join    , 1485,  UNSP, "<value>",           "# ")
+
+  addCase(1490,emit    , 1490,  0   , "-",                 "############ function parm value")
+  addCase(1490,callem  , 1490,  1495, "(",                 "# ")
+  addCase(1490,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1490,call    , 1400,  1495, "select",            "# ")
+  addCase(1490,call    , 2840,  1495, "convert",           "# ")
+  addCase(1490,call    , 2115,  1495, "cast",              "# ")
+  addCase(1490,call    , 1435,  1495, "datepart",          "# ")
+  addCase(1490,call    , 1435,  1495, "dateadd",           "# ")
+  addCase(1490,emit    , 1490,  0   , "distinct",          "# ")
+  addCase(1490,repl    , 1495,  INFO, "to",                "tot")
+  addCase(1490,emit    , 1495,  0   , "<value>",           "# ")
+
+  addCase(1495,emit    , 1490,  0   , ",",                 "############ function parm operator")
+  addCase(1495,emit    , 1490,  0   , ".",                 "# ")
+  addCase(1495,callem  , 1490,  0   , "(",                 "# ")
+  addCase(1495,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1495,emit    , 1490,  0   , "/",                 "# ")
+  addCase(1495,emit    , 1490,  0   , "?",                 "# ")
+  addCase(1495,emit    , 1490,  0   , "*",                 "# ")
+  addCase(1495,emit    , 1490,  0   , "-",                 "# ")
+  addCase(1495,emit    , 1490,  0   , "+",                 "# ")
+  addCase(1495,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1500,emit    , 1500,  0   , "from",              "############ from clause ")
+  addCase(1500,callem  , 1505,  1550, "(",                 "# ")
+  addCase(1500,drop    , 1500,  SERR, ".",                 "# ")
+  addCase(1500,emit    , 1510,  0   , "sysobjects",        "# ")
+  addCase(1500,emit    , 1510,  0   , "sysindexes",        "# ")
+  addCase(1500,emit    , 4430,  0   , "information_schema", "# ")
+  addCase(1500,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1500,procref , 1550,  0   , "<value>",           "# from name")
+
+  addCase(1505,emit    , 1410,  0   , "select",            "# ")
+
+  addCase(1510,emit    , 1515,  0   , "where",             "# sysobjects")
+  addCase(1510,jump    , 1550,  0   , "<any>",             "# ")
+
+  addCase(1515,emit    , 1540,  0   , "type",              "# sysobjects")
+  addCase(1515,repl    , 1520,  0   , "name",              "id")
+  addCase(1515,emit    , 1540,  0   , "xtype",             "# ")
+  addCase(1515,jump    , 1595,  0   , "<any>",             "# ")
+
+  addCase(1520,emit    , 1525,  0   , "=",                 "# ")
+
+  addCase(1525,isrt    , 1530,  0   , "object_id(",        "# ")
+
+  addCase(1530,emit    , 1535,  0   , "<value>",           "# ")
+
+  addCase(1535,isrt    , 1620,  0   , ")",                 "# ")
+
+  addCase(1540,emit    , 1545,  0   , "=",                 "# ")
+  addCase(1540,emit    , 1515,  0   , "and",               "# ")
+
+  addCase(1545,emit    , 1540,  0   , "<value>",           "# ")
+
+  addCase(1550,emit    , 1500,  0   , ",",                 "############ from operator")
+  addCase(1550,emit    , 1500,  0   , ".",                 "# schema")
+  addCase(1550,emit    , 1550,  0   , "as",                "# ")
+  addCase(1550,emit    , 1550,  0   , "inner",             "# ")
+  addCase(1550,emit    , 1550,  0   , "outer",             "# ")
+  addCase(1550,emit    , 1575,  0   , "join",              "# ")
+  addCase(1550,emit    , 1550,  0   , "left",              "# ")
+  addCase(1550,repl    , 1550,  INFO, "to",                "tot")
+  addCase(1550,emit    , 1595,  0   , "where",             "# ")
+  addCase(1550,emit    , 1565,  0   , "union",             "# ")
+  addCase(1550,call    , 1355,  0   , "with",              "# UNSUPPORTED")
+  addCase(1550,emit    , 1605,  0   , "group",             "# ")
+  addCase(1550,emit    , 1585,  0   , "order",             "# ")
+  addCase(1550,procref , 1555,  1   , "(",                 "# ")
+  addCase(1550,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1550,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1550,emit    , 1550,  0   , "<value>",           "# table alias")
+
+  addCase(1555,drop    , 1560,  0   , "(",                 "# function")
+
+  addCase(1560,call    , 1570,  1550, "<any>",             "# ")
+
+  addCase(1565,emit    , 1565,  0   , "all",               "# ")
+  addCase(1565,emit    , 1410,  0   , "select",            "# ")
+
+  addCase(1570,rtnem   , 0   ,  0   , ")",                 "############ from function")
+  addCase(1570,emit    , 1570,  0   , ",",                 "# list")
+  addCase(1570,skip    , 0   ,  SERR, "<key>",             "# ")
+  addCase(1570,emit    , 1570,  UNSP, "null",              "# uncast null")
+  addCase(1570,call    , 2115,  1570, "cast",              "# ")
+  addCase(1570,emit    , 1570,  0   , "<value>",           "# parameter")
+
+  addCase(1575,emit    , 1580,  0   , "<value>",           "############ join table ")
+
+  addCase(1580,emit    , 1595,  0   , "on",                "############ join condition")
+  addCase(1580,repl    , 1580,  INFO, "to",                "tot")
+  addCase(1580,emit    , 1580,  0   , "<value>",           "# table alias ")
+
+  addCase(1585,emit    , 1590,  0   , "by",                "############ order by")
+  addCase(1585,emit    , 1585,  0   , "desc",              "# ")
+  addCase(1585,emit    , 1585,  0   , "asc",               "# ")
+  addCase(1585,emit    , 1590,  0   , ",",                 "# ")
+  addCase(1585,emit    , 1590,  0   , ".",                 "# ")
+  addCase(1585,emit    , 1590,  0   , "+",                 "# ")
+  addCase(1585,drop    , 1585,  0   , "for",               "# ")
+  addCase(1585,drop    , 1585,  UNSP, "xml",               "# ")
+  addCase(1585,drop    , 1585,  0   , "explicit",          "# ")
+  addCase(1585,callem  , 1590,  0   , "(",                 "# ")
+  addCase(1585,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1585,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1585,join    , 1585,  UNSP, "<value>",           "# ")
+
+  addCase(1590,call    , 2115,  1585, "cast",              "# ")
+  addCase(1590,call    , 2840,  1585, "convert",           "# ")
+  addCase(1590,join    , 1585,  0   , "<value>",           "# ")
+
+  addCase(1595,emit    , 1595,  0   , "not",               "############ where value ")
+  addCase(1595,emit    , 1595,  0   , "!",                 "# ")
+  addCase(1595,emit    , 1595,  0   , ">",                 "# <>")
+  addCase(1595,emit    , 1595,  0   , "-",                 "# ")
+  addCase(1595,emit    , 1595,  0   , "=",                 "# >=")
+  addCase(1595,callem  , 1600,  1620, "(",                 "# ")
+  addCase(1595,emit    , 1595,  0   , "exists",            "# ")
+  addCase(1595,emit    , 1625,  0   , "union",             "# ")
+  addCase(1595,call    , 2115,  1620, "cast",              "# ")
+  addCase(1595,call    , 1630,  1620, "case",              "# ")
+  addCase(1595,call    , 2840,  1620, "convert",           "# ")
+  addCase(1595,call    , 1435,  1620, "datepart",          "# ")
+  addCase(1595,call    , 1435,  1620, "dateadd",           "# ")
+  addCase(1595,repl    , 1620,  INFO, "to",                "tot")
+  addCase(1595,repl    , 1620,  0   , "0x0",               "null")
+  addCase(1595,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1595,emit    , 1620,  0   , "<value>",           "# where column")
+
+  addCase(1600,call    , 1400,  1620, "select",            "############ sub select?")
+  addCase(1600,callem  , 1600,  1620, "(",                 "# ")
+  addCase(1600,emit    , 1620,  0   , "<value>",           "# plist value")
+
+  addCase(1605,emit    , 1610,  0   , "by",                "############ group by")
+
+  addCase(1610,callem  , 1610,  1615, "(",                 "# ")
+  addCase(1610,call    , 2840,  1615, "convert",           "# ")
+  addCase(1610,call    , 1630,  1615, "case",              "# ")
+  addCase(1610,repl    , 1615,  0   , "offset",            "\"offset\"")
+  addCase(1610,repl    , 1615,  0   , "user",              "\"user\"")
+  addCase(1610,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1610,emit    , 1615,  0   , "<value>",           "# ")
+
+  addCase(1615,emit    , 1610,  0   , "/",                 "############ group operator ")
+  addCase(1615,emit    , 1610,  0   , "?",                 "# ")
+  addCase(1615,emit    , 1610,  0   , "*",                 "# ")
+  addCase(1615,emit    , 1610,  0   , "+",                 "# ")
+  addCase(1615,emit    , 1610,  0   , "-",                 "# ")
+  addCase(1615,emit    , 1610,  0   , ",",                 "# ")
+  addCase(1615,emit    , 1610,  0   , ".",                 "# ")
+  addCase(1615,callem  , 1610,  1615, "(",                 "# ")
+  addCase(1615,drop    , 1615,  0   , "with",              "# ")
+  addCase(1615,drop    , 1615,  UNSP, "rollup",            "# ")
+  addCase(1615,emit    , 1595,  0   , "having",            "# ")
+  addCase(1615,emit    , 1585,  0   , "order",             "# ")
+  addCase(1615,emit    , 1625,  0   , "union",             "# ")
+  addCase(1615,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1615,skip    , 0   ,  0   , "<key>",             "# ")
+
+  addCase(1620,emit    , 1595,  0   , "=",                 "############ where operator")
+  addCase(1620,emit    , 1595,  0   , "<",                 "# ")
+  addCase(1620,emit    , 1595,  0   , ">",                 "# ")
+  addCase(1620,emit    , 1595,  0   , ".",                 "# ")
+  addCase(1620,emit    , 1595,  0   , ",",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "like",              "# ")
+  addCase(1620,emit    , 1620,  0   , "not",               "# ")
+  addCase(1620,emit    , 1620,  0   , "with",              "# ")
+  addCase(1620,emit    , 1620,  0   , "rollup",            "# ")
+  addCase(1620,emit    , 1595,  0   , "exists",            "# ")
+  addCase(1620,emit    , 1620,  0   , "!",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "where",             "# ")
+  addCase(1620,emit    , 1595,  0   , "on",                "# ")
+  addCase(1620,emit    , 1595,  0   , "in",                "# ")
+  addCase(1620,emit    , 1620,  0   , "is",                "# ")
+  addCase(1620,emit    , 1595,  0   , "null",              "# ")
+  addCase(1620,emit    , 1595,  0   , "isnull",            "# ")
+  addCase(1620,emit    , 1595,  0   , "between",           "# ")
+  addCase(1620,emit    , 1595,  0   , "/",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "?",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "*",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "-",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "+",                 "# ")
+  addCase(1620,callem  , 1595,  0   , "(",                 "# function")
+  addCase(1620,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1620,emit    , 1595,  0   , "or",                "# ")
+  addCase(1620,emit    , 1595,  0   , "and",               "# ")
+  addCase(1620,emit    , 1620,  0   , "inner",             "# ")
+  addCase(1620,emit    , 1620,  0   , "outer",             "# ")
+  addCase(1620,callem  , 1575,  0   , "join",              "# ")
+  addCase(1620,emit    , 1625,  0   , "union",             "# ")
+  addCase(1620,callem  , 1585,  0   , "order",             "# ")
+  addCase(1620,emit    , 1605,  0   , "group",             "# ")
+  addCase(1620,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(1620,emit    , 1620,  0   , "<value>",           "# table alias? ")
+
+  addCase(1625,emit    , 1625,  0   , "all",               "############ union")
+  addCase(1625,callem  , 1625,  0   , "(",                 "# ")
+  addCase(1625,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1625,call    , 1400,  1620, "select",            "# ")
+  addCase(1625,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1630,emit    , 1635,  0   , "case",              "############ case ")
+
+  addCase(1635,emit    , 1635,  0   , "when",              "# ")
+  addCase(1635,call    , 1400,  0   , "select",            "# ")
+  addCase(1635,call    , 2840,  1640, "convert",           "# ")
+  addCase(1635,callem  , 1645,  1640, "(",                 "# ")
+  addCase(1635,emit    , 1635,  0   , "-",                 "# ")
+  addCase(1635,emit    , 1635,  0   , "=",                 "# ")
+  addCase(1635,emit    , 1635,  0   , ">",                 "# ")
+  addCase(1635,call    , 1630,  1640, "case",              "# ")
+  addCase(1635,emit    , 1640,  0   , "<value>",           "# ")
+
+  addCase(1640,emit    , 1635,  0   , ".",                 "# ")
+  addCase(1640,emit    , 1635,  0   , ",",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "-",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "+",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "/",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "?",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "*",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "=",                 "# ")
+  addCase(1640,emit    , 1635,  0   , "<",                 "# ")
+  addCase(1640,emit    , 1635,  0   , ">",                 "# ")
+  addCase(1640,emit    , 1640,  0   , "is",                "# ")
+  addCase(1640,emit    , 1635,  0   , "or",                "# ")
+  addCase(1640,emit    , 1640,  0   , "not",               "# ")
+  addCase(1640,emit    , 1640,  0   , "null",              "# ")
+  addCase(1640,emit    , 1635,  0   , "then",              "# ")
+  addCase(1640,emit    , 1635,  0   , "else",              "# ")
+  addCase(1640,emit    , 1635,  0   , "when",              "# ")
+  addCase(1640,call    , 1630,  0   , "case",              "# ")
+  addCase(1640,callem  , 1645,  0   , "(",                 "# ")
+  addCase(1640,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1640,emit    , 1655,  0   , "end",               "# ")
+  addCase(1640,emit    , 1640,  0   , "in",                "# ")
+  addCase(1640,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1645,call    , 1400,  1640, "select",            "# ")
+  addCase(1645,call    , 2840,  1640, "convert",           "# ")
+  addCase(1645,callem  , 1645,  1650, "(",                 "# ")
+  addCase(1645,emit    , 1650,  0   , "<value>",           "# plist value")
+
+  addCase(1650,emit    , 1645,  0   , ".",                 "# ")
+  addCase(1650,emit    , 1645,  0   , ",",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "/",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "?",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "*",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "+",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "=",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "&",                 "# ")
+  addCase(1650,emit    , 1645,  0   , "as",                "# ")
+  addCase(1650,emit    , 1645,  0   , "-",                 "# ")
+  addCase(1650,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1650,callem  , 1645,  0   , "(",                 "# ")
+  addCase(1650,emit    , 1655,  0   , "end",               "# ")
+
+  addCase(1655,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1660,emit    , 1665,  0   , "replace",           "############# replace function ")
+
+  addCase(1665,emit    , 1670,  0   , "(",                 "# ")
+
+  addCase(1670,call    , 1660,  1675, "replace",           "# ")
+  addCase(1670,emit    , 1675,  0   , "<value>",           "# ")
+
+  addCase(1675,callem  , 1680,  0   , "(",                 "# ")
+  addCase(1675,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(1675,emit    , 1685,  0   , ",",                 "# ")
+
+  addCase(1680,emit    , 1675,  0   , "<value>",           "# ")
+
+  addCase(1685,emit    , 1690,  0   , "char",              "'char")
+  addCase(1685,emit    , 1700,  0   , "<value>",           "# ")
+
+  addCase(1690,emit    , 1690,  0   , "(",                 "# ")
+  addCase(1690,emit    , 1695,  0   , "<value>",           "# ")
+
+  addCase(1695,emit    , 1695,  0   , ")",                 "# ")
+  addCase(1695,isrt    , 1700,  0   , "'",                 "# ")
+
+  addCase(1700,emit    , 1705,  0   , ",",                 "# ")
+
+  addCase(1705,emit    , 1710,  0   , "<value>",           "# ")
+
+  addCase(1710,emit    , 1715,  0   , ")",                 "# ")
+
+  addCase(1715,skip    , 0   ,  0   , "<any>",             "# ")
+
+# raiserror
+
+  addCase(1800,repl    , 1805,  0   , "raiserror",         "raise exception '%s %d %d',")
+
+  addCase(1805,call    , 1810,  0   , "(",                 "# ")
+  addCase(1805,drop    , 1805,  0   , "with",              "# ")
+  addCase(1805,drop    , 1825,  0   , "log",               "# ")
+  addCase(1805,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1810,drop    , 1815,  0   , "(",                 "# ")
+
+  addCase(1815,emit    , 1820,  0   , "<value>",           "# ")
+
+  addCase(1820,emit    , 1820,  0   , ",",                 "# ")
+  addCase(1820,drop    , 1825,  0   , ")",                 "# ")
+  addCase(1820,emit    , 1820,  0   , "<value>",           "# ")
+
+  addCase(1825,skip    , 0   ,  0   , "<any>",             "# ")
+
+# drop
+
+  addCase(1900,emit    , 1905,  0   , "drop",              "############ drop ")
+
+  addCase(1905,emit    , 1910,  0   , "table",             "# ")
+  addCase(1905,emit    , 1920,  0   , "view",              "# ")
+  addCase(1905,emit    , 1910,  0   , "constraint",        "# ")
+  addCase(1905,emit    , 1930,  0   , "function",          "# ")
+  addCase(1905,repl    , 1930,  0   , "procedure",         "function")
+  addCase(1905,repl    , 1940,  0   , "trigger",           "trigger if exists")
+
+  addCase(1910,tabdrop , 1915,  0   , "<value>",           "# Table name")
+
+  addCase(1915,emit    , 1915,  0   , "cascade",           "# ")
+  addCase(1915,emit    , 1910,  0   , ".",                 "# ")
+  addCase(1915,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(1920,emit    , 1925,  0   , "if",                "# ")
+  addCase(1920,emit    , 1915,  0   , "<value>",           "# View name")
+
+  addCase(1925,emit    , 1920,  0   , "exists",            "# ")
+
+  addCase(1930,procset , 1935,  0   , "<value>",           "# Function/Proc")
+
+  addCase(1935,procsig , 1915,  1   , "<any>",             "# ")
+
+  addCase(1940,procset , 1945,  0   , "<value>",           "# Trigger")
+
+  addCase(1945,isrt    , 1950,  0   , "on",                "# ")
+
+  addCase(1950,trigprt , 1955,  0   , "<any>",             "# ")
+
+  addCase(1955,isrt    , 1960,  0   , "; drop rule if exists", "# ")
+
+  addCase(1960,procget , 1965,  0   , "<any>",             "# ")
+
+  addCase(1965,isrt    , 1970,  0   , "on",                "# ")
+
+  addCase(1970,trigprt , 1975,  0   , "<any>",             "# ")
+
+  addCase(1975,isrt    , 1980,  0   , "; drop function",   "# ")
+
+  addCase(1980,procget , 1935,  0   , "<any>",             "# ")
+
+# truncate
+
+  addCase(2000,emit    , 2005,  0   , "truncate",          "############ truncate ")
+
+  addCase(2005,emit    , 2010,  0   , "table",             "# ")
+
+  addCase(2010,emit    , 2015,  0   , "<value>",           "# ")
+
+  addCase(2015,skip    , 0   ,  0   , "<any>",             "# ")
+
+# print
+
+  addCase(2100,repl    , 2105,  0   , "print",             "raise info '%s',")
+
+  addCase(2105,call    , 2115,  0   , "cast",              "# ")
+  addCase(2105,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2105,emit    , 2110,  0   , "<value>",           "# ")
+
+  addCase(2110,callem  , 2105,  2110, "(",                 "# ")
+  addCase(2110,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2110,emit    , 2105,  0   , ",",                 "# ")
+  addCase(2110,emit    , 2105,  0   , "+",                 "# ")
+  addCase(2110,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2115,emit    , 2120,  0   , "cast",              "############ cast ")
+
+  addCase(2120,emit    , 2125,  0   , "(",                 "# ")
+
+  addCase(2125,call    , 2115,  2130, "cast",              "# ")
+  addCase(2125,call    , 2840,  2130, "convert",           "# ")
+  addCase(2125,call    , 1435,  2130, "datepart",          "# ")
+  addCase(2125,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2125,callem  , 2125,  2130, "(",                 "# ")
+  addCase(2125,emit    , 2125,  0   , "+",                 "# ")
+  addCase(2125,repl    , 2125,  2130, "bit",               "boolean")
+  addCase(2125,emit    , 2130,  0   , "<value>",           "# ")
+
+  addCase(2130,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2130,callem  , 2125,  0   , "(",                 "# ")
+  addCase(2130,emit    , 2125,  0   , "*",                 "# ")
+  addCase(2130,emit    , 2125,  0   , "+",                 "# ")
+  addCase(2130,emit    , 2125,  0   , "+",                 "# ")
+  addCase(2130,emit    , 2125,  0   , "-",                 "# ")
+  addCase(2130,emit    , 2125,  0   , "as",                "# ")
+  addCase(2130,emit    , 2125,  0   , ",",                 "# ")
+  addCase(2130,emit    , 2125,  0   , ".",                 "# ")
+
+# if
+
+  addCase(2200,emit    , 2205,  0   , "if",                "############ if ")
+
+  addCase(2205,call    , 2230,  2210, "<any>",             "# ")
+
+  addCase(2210,isrt    , 2215,  0   , "then",              "# ")
+
+  addCase(2215,trap    , 0   ,  2220, "<any>",             "# ")
+
+  addCase(2220,trap    , 0   ,  2220, "else",              "# ")
+  addCase(2220,isrt    , 2225,  0   , "end if",            "# ")
+
+  addCase(2225,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2230,callem  , 2230,  2235, "(",                 "# ")
+  addCase(2230,emit    , 2230,  0   , "not",               "# ")
+  addCase(2230,emit    , 2230,  0   , "or",                "# ")
+  addCase(2230,emit    , 2230,  0   , ">",                 "# ")
+  addCase(2230,emit    , 2230,  0   , "=",                 "# ")
+  addCase(2230,emit    , 2230,  0   , "exists",            "# ")
+  addCase(2230,call    , 1400,  0   , "select",            "# ")
+  addCase(2230,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2230,emit    , 2235,  0   , "<value>",           "# value")
+
+  addCase(2235,emit    , 2230,  0   , ".",                 "# ")
+  addCase(2235,emit    , 2240,  0   , "<",                 "# operator")
+  addCase(2235,emit    , 2240,  0   , ">",                 "# ")
+  addCase(2235,emit    , 2240,  0   , "=",                 "# ")
+  addCase(2235,emit    , 2240,  0   , "-",                 "# ")
+  addCase(2235,emit    , 2240,  0   , "+",                 "# ")
+  addCase(2235,emit    , 2255,  0   , "%",                 "# ")
+  addCase(2235,emit    , 2245,  0   , "in",                "# ")
+  addCase(2235,emit    , 2235,  0   , "!",                 "# ")
+  addCase(2235,emit    , 2235,  0   , "is",                "# ")
+  addCase(2235,emit    , 2235,  0   , "not",               "# ")
+  addCase(2235,emit    , 2230,  0   , "or",                "# ")
+  addCase(2235,emit    , 2230,  0   , "and",               "# ")
+  addCase(2235,emit    , 2265,  0   , "null",              "# ")
+  addCase(2235,callem  , 2240,  0   , "(",                 "# function")
+  addCase(2235,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2235,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2240,emit    , 2240,  0   , ">",                 "# <>")
+  addCase(2240,emit    , 2240,  0   , "-",                 "# ")
+  addCase(2240,emit    , 2240,  0   , "=",                 "# <=")
+  addCase(2240,emit    , 2265,  0   , "<value>",           "# value")
+
+  addCase(2245,emit    , 2250,  0   , "(",                 "# list")
+  addCase(2245,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(2250,emit    , 2260,  0   , "<value>",           "# ")
+
+  addCase(2255,emit    , 2235,  0   , "<value>",           "# ")
+
+  addCase(2260,emit    , 2250,  0   , ",",                 "# ")
+  addCase(2260,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2260,emit    , 2260,  0   , "<value>",           "# <value> <value>")
+
+  addCase(2265,emit    , 2230,  0   , "and",               "# joiner")
+  addCase(2265,emit    , 2230,  0   , "or",                "# joiner")
+  addCase(2265,emit    , 2240,  0   , ",",                 "# ")
+  addCase(2265,emit    , 2240,  0   , "+",                 "# ")
+  addCase(2265,emit    , 2240,  0   , "-",                 "# ")
+  addCase(2265,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2265,callem  , 2240,  0   , "(",                 "# function")
+  addCase(2265,skip    , 0   ,  0   , "<any>",             "# ")
+
+# declare
+
+  addCase(2300,save    , 2305,  0   , "<value>",           "# varname")
+
+  addCase(2305,drop    , 2340,  0   , "cursor",            "# ")
+  addCase(2305,drop    , 2310,  0   , "table",             "# ")
+  addCase(2305,jump    , 2325,  0   , "<any>",             "# ")
+
+  addCase(2310,begtbl  , 2315,  0   , "<any>",             "# ")
+
+  addCase(2315,isrt    , 2320,  0   , "bogus int; begin create temp table", "# ")
+
+  addCase(2320,tabdcl  , 1015,  0   , "<any>",             "# ")
+
+  addCase(2325,load    , 2330,  0   , "<any>",             "# ")
+
+  addCase(2330,emit    , 2335,  0   , "sysname",           "# ")
+  addCase(2330,emit    , 2350,  0   , "cursor",            "# ")
+  addCase(2330,repl    , 2360,  0   , "nvarchar",          "varchar")
+  addCase(2330,emit    , 2360,  0   , "varchar",           "# ")
+  addCase(2330,emit    , 2330,  0   , "int",               "# ")
+  addCase(2330,emit    , 2330,  0   , "bigint",            "# ")
+  addCase(2330,emit    , 2330,  0   , "smallint",          "# ")
+  addCase(2330,emit    , 2330,  0   , "real",              "# ")
+  addCase(2330,emit    , 2330,  0   , "float",             "# ")
+  addCase(2330,emit    , 2330,  0   , "char",              "# ")
+  addCase(2330,emit    , 2330,  0   , "nchar",             "# ")
+  addCase(2330,repl    , 2330,  0   , "tinyint",           "smallint")
+  addCase(2330,repl    , 2330,  0   , "money",             "numeric(19,4)")
+  addCase(2330,repl    , 2330,  0   , "bit",               "boolean")
+  addCase(2330,callem  , 2300,  0   , "(",                 "# ")
+  addCase(2330,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2330,drop    , 2330,  0   , "as",                "# ")
+  addCase(2330,repl    , 2330,  0   , "datetime",          "timestamp")
+  addCase(2330,repl    , 2330,  0   , "uniqueidentifier",  "uuid")
+  addCase(2330,repl    , 2300,  0   , ",",                 "; declare")
+  addCase(2330,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2335,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2340,load    , 2345,  0   , "<any>",             "# ")
+
+  addCase(2345,isrt    , 2350,  0   , "cursor",            "# ")
+
+  addCase(2350,drop    , 2350,  0   , "local",             "# no hold ")
+  addCase(2350,drop    , 2350,  0   , "forward_only",      "# no scoll      ")
+  addCase(2350,drop    , 2350,  0   , "fast_forward",      "# ")
+  addCase(2350,drop    , 2350,  0   , "static",            "# ")
+  addCase(2350,drop    , 2350,  0   , "read_only",         "# ")
+  addCase(2350,emit    , 2355,  0   , "for",               "# ")
+
+  addCase(2355,drop    , 2355,  0   , "begin",             "# ")
+  addCase(2355,emit    , 1410,  0   , "select",            "# ")
+
+  addCase(2360,callem  , 2365,  2330, "(",                 "# varchar")
+  addCase(2360,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(2365,emit    , 2360,  0   , "<value>",           "# ")
+
+# close
+
+  addCase(2400,emit    , 2405,  0   , "open",              "############ open ")
+  addCase(2400,emit    , 2405,  0   , "close",             "############ close ")
+
+  addCase(2405,emit    , 2410,  0   , "<value>",           "# ")
+
+  addCase(2410,skip    , 0   ,  0   , "<any>",             "# ")
+
+# deallocate
+
+  addCase(2500,repl    , 2505,  0   , "deallocate",        "null")
+
+  addCase(2505,drop    , 2510,  0   , "<value>",           "# ")
+
+  addCase(2510,skip    , 0   ,  0   , "<any>",             "# ")
+
+# fetch
+
+  addCase(2600,emit    , 2605,  0   , "fetch",             "############ fetch ")
+
+  addCase(2605,emit    , 2605,  0   , "next",              "# ")
+  addCase(2605,emit    , 2610,  0   , "from",              "# ")
+  addCase(2605,emit    , 2610,  0   , "into",              "# ")
+  addCase(2605,emit    , 2610,  0   , ",",                 "# ")
+  addCase(2605,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2610,emit    , 2605,  0   , "<value>",           "# ")
+
+# set
+
+  addCase(2700,drop    , 2800,  0   , "set",               "# ")
+
+# identity_insert
+
+  addCase(2800,drop    , 2910,  0   , "transaction",       "# ")
+  addCase(2800,drop    , 3005,  0   , "ansi_nulls",        "# ")
+  addCase(2800,drop    , 3005,  INFO, "ansi_padding",      "# ")
+  addCase(2800,drop    , 3000,  INFO, "quoted_identifier", "# ")
+  addCase(2800,drop    , 3015,  0   , "dateformat",        "# ")
+  addCase(2800,drop    , 3000,  0   , "nocount",           "# ")
+  addCase(2800,drop    , 3010,  0   , "identity_insert",   "# ")
+  addCase(2800,drop    , 3000,  INFO, "xact_abort",        "# ")
+  addCase(2800,drop    , 3025,  UNSP, "ansi_warnings",     "# ")
+  addCase(2800,drop    , 3000,  UNSP, "rowcount",          "# ")
+  addCase(2800,drop    , 3000,  INFO, "ansi_null_default", "# ")
+  addCase(2800,drop    , 3000,  INFO, "page_verify",       "# ")
+  addCase(2800,drop    , 3000,  INFO, "concat_null_yields_null", "# ")
+  addCase(2800,drop    , 3000,  INFO, "numeric_roundabort", "# ")
+  addCase(2800,drop    , 3000,  INFO, "recursive_triggers", "# ")
+  addCase(2800,drop    , 3000,  INFO, "auto_close",        "# ")
+  addCase(2800,drop    , 3000,  INFO, "auto_shrink",       "# ")
+  addCase(2800,drop    , 3000,  INFO, "auto_create_statistics", "# ")
+  addCase(2800,drop    , 3000,  INFO, "auto_update_statistics", "# ")
+  addCase(2800,drop    , 3000,  INFO, "cursor_close_on_commit", "# ")
+  addCase(2800,drop    , 3000,  INFO, "cursor_default",    "# ")
+  addCase(2800,drop    , 3000,  INFO, "arithignore",       "# ")
+  addCase(2800,drop    , 3000,  INFO, "arithabort",        "# ")
+  addCase(2800,drop    , 3000,  INFO, "recovery",          "# ")
+  addCase(2800,repl    , 2805,  INFO, "read_write",        "owner to postgres")
+  addCase(2800,repl    , 2805,  INFO, "multi_user",        "set owner to postgres")
+  addCase(2800,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2800,emit    , 2810,  0   , "<value>",           "# ")
+
+  addCase(2805,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(2810,emit    , 2800,  0   , ".",                 "# ")
+  addCase(2810,repl    , 2815,  0   , "=",                 ":=")
+  addCase(2810,emit    , 2805,  0   , "off",               "# ")
+  addCase(2810,emit    , 2805,  0   , "on",                "# ")
+  addCase(2810,emit    , 2805,  0   , "checksum",          "# ")
+
+  addCase(2815,callem  , 2820,  2825, "(",                 "# ")
+  addCase(2815,call    , 1630,  0   , "case",              "# ")
+  addCase(2815,call    , 2840,  0   , "convert",           "# ")
+  addCase(2815,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2815,emit    , 2825,  0   , "<value>",           "# ")
+
+  addCase(2820,call    , 1400,  2825, "select",            "# ")
+  addCase(2820,call    , 2840,  2825, "convert",           "# ")
+  addCase(2820,callem  , 2820,  2825, "(",                 "# ")
+  addCase(2820,call    , 1630,  0   , "case",              "# ")
+  addCase(2820,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2820,emit    , 2825,  0   , "<value>",           "# ")
+
+  addCase(2825,callem  , 2815,  0   , "(",                 "# ")
+  addCase(2825,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2825,emit    , 2815,  0   , ",",                 "# ")
+  addCase(2825,emit    , 2815,  0   , ".",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "+",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "-",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "/",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "?",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "*",                 "# ")
+  addCase(2825,emit    , 2815,  0   , "as",                "# ")
+  addCase(2825,emit    , 2830,  0   , "from",              "# ")
+  addCase(2825,emit    , 2815,  0   , "=",                 "# ")
+  addCase(2825,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2825,emit    , 2825,  0   , "<value>",           "# ")
+
+  addCase(2830,callem  , 2830,  0   , "(",                 "# ")
+  addCase(2830,call    , 1400,  0   , "select",            "# ")
+  addCase(2830,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2830,emit    , 2835,  0   , "<value>",           "# from table ")
+
+  addCase(2835,emit    , 2830,  0   , ",",                 "# ")
+  addCase(2835,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2835,emit    , 2835,  0   , "<value>",           "# table alias ")
+
+  addCase(2840,repl    , 2845,  0   , "convert",           "cast")
+
+  addCase(2845,frame   , 2850,  0   , "<any>",             "# stack frame")
+
+  addCase(2850,callem  , 2855,  95  , "(",                 "# start bracket")
+
+  addCase(2855,pushalt , 2860,  0   , "nvarchar",          "varchar")
+  addCase(2855,pushalt , 2860,  0   , "uniqueidentifier",  "uuid")
+  addCase(2855,pushalt , 2860,  0   , "bit",               "boolean")
+  addCase(2855,save    , 2860,  0   , "<value>",           "# ")
+
+  addCase(2860,save    , 2865,  0   , "(",                 "# ")
+  addCase(2860,drop    , 2880,  0   , ",",                 "# ")
+
+  addCase(2865,save    , 2870,  0   , "<value>",           "# ")
+
+  addCase(2870,save    , 2875,  0   , ")",                 "# ")
+
+  addCase(2875,drop    , 2880,  0   , ",",                 "# ")
+
+  addCase(2880,call    , 1400,  2895, "select",            "# value or function ")
+  addCase(2880,call    , 2840,  2885, "convert",           "# ")
+  addCase(2880,call    , 2115,  2885, "cast",              "# ")
+  addCase(2880,callem  , 2880,  2885, "(",                 "# ")
+  addCase(2880,emit    , 2885,  0   , "<value>",           "# ")
+
+  addCase(2885,emit    , 2880,  0   , ".",                 "# inline arguments ")
+  addCase(2885,callem  , 2900,  0   , "(",                 "# function ")
+  addCase(2885,convbr  , 0   ,  0   , ")",                 "# closing bracket")
+  addCase(2885,drop    , 2890,  0   , ",",                 "# extra parameter")
+  addCase(2885,emit    , 2880,  0   , "?",                 "# ")
+  addCase(2885,emit    , 2880,  0   , "/",                 "# ")
+  addCase(2885,emit    , 2880,  0   , "*",                 "# ")
+  addCase(2885,emit    , 2880,  0   , "%",                 "# ")
+  addCase(2885,emit    , 2880,  0   , "+",                 "# ")
+  addCase(2885,emit    , 2880,  0   , "-",                 "# ")
+
+  addCase(2890,drop    , 2885,  UNSP, "<value>",           "# date format number")
+
+  addCase(2895,skip    , 0   ,  0   , "<any>",             "# extra bracket for select")
+
+  addCase(2900,call    , 1400,  2905, "select",            "# actual function ")
+  addCase(2900,call    , 2840,  2905, "convert",           "# ")
+  addCase(2900,call    , 1435,  2905, "dateadd",           "# ")
+  addCase(2900,call    , 2115,  2905, "cast",              "# ")
+  addCase(2900,callem  , 2900,  2905, "(",                 "# ")
+  addCase(2900,emit    , 2905,  0   , "<value>",           "# ")
+
+  addCase(2905,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(2905,callem  , 2900,  0   , "(",                 "# ")
+  addCase(2905,emit    , 2900,  0   , ",",                 "# ")
+  addCase(2905,emit    , 2900,  0   , ".",                 "# ")
+  addCase(2905,emit    , 2900,  0   , "?",                 "# ")
+  addCase(2905,emit    , 2900,  0   , "/",                 "# ")
+  addCase(2905,emit    , 2900,  0   , "*",                 "# ")
+  addCase(2905,emit    , 2900,  0   , "+",                 "# ")
+
+  addCase(2910,isrt    , 2915,  0   , "set transaction",   "############ set tran ")
+
+  addCase(2915,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(2915,emit    , 2915,  0   , "<value>",           "# ")
+
+# ansi_padding
+
+  addCase(3000,isrt    , 3030,  0   , "set escape_string_warning", "# catch all")
+
+  addCase(3005,isrt    , 3030,  0   , "set transform_null_equals", "# ")
+
+  addCase(3010,isrt    , 3045,  0   , "set escape_string_warning", "# ")
+
+  addCase(3015,isrt    , 3030,  0   , "set datestyle",     "# ")
+
+  addCase(3020,isrt    , 3025,  0   , "set escape_string_warning", "# ")
+
+  addCase(3025,prtansi , 3030,  1   , "on",                "# ")
+  addCase(3025,prtansi , 3030,  0   , "off",               "# ")
+
+  addCase(3030,repl    , 3040,  0   , "on",                "= 1")
+  addCase(3030,repl    , 3040,  0   , "off",               "= 0")
+  addCase(3030,repl    , 3040,  0   , "mdy",               "to iso,mdy")
+  addCase(3030,repl    , 3040,  0   , "global",            "= 0")
+  addCase(3030,repl    , 3040,  0   , "simple",            "= 0")
+  addCase(3030,repl    , 3040,  0   , "1",                 "=1")
+  addCase(3030,repl    , 3040,  0   , "0",                 "=0")
+  addCase(3030,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3030,drop    , 3035,  0   , "<value>",           "# ")
+
+  addCase(3035,isrt    , 3040,  0   , "=0",                "# ")
+
+  addCase(3040,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3045,drop    , 3030,  0   , "<value>",           "# ")
+
+# while
+
+  addCase(3100,emit    , 3105,  0   , "while",             "############ while ")
+
+  addCase(3105,call    , 3130,  3110, "<any>",             "# ")
+
+  addCase(3110,isrt    , 3115,  0   , "loop",              "# ")
+
+  addCase(3115,trap    , 0   ,  3120, "<any>",             "# ")
+
+  addCase(3120,isrt    , 3125,  0   , "end loop",          "# ")
+
+  addCase(3125,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3130,callem  , 3130,  0   , "(",                 "# ")
+  addCase(3130,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3130,drop    , 3135,  UNSP, "__fetch_status",    "# ")
+  addCase(3130,emit    , 3145,  0   , "<value>",           "# ")
+
+  addCase(3135,repl    , 3140,  0   , "=",                 "found ")
+  addCase(3135,repl    , 3140,  0   , "<",                 "not found")
+
+  addCase(3140,drop    , 3140,  0   , ">",                 "# <> ")
+  addCase(3140,drop    , 3145,  0   , "0",                 "# ")
+  addCase(3140,drop    , 3140,  0   , "-",                 "# ")
+  addCase(3140,drop    , 3145,  0   , "1",                 "# ")
+
+  addCase(3145,emit    , 3150,  0   , "=",                 "# ")
+  addCase(3145,emit    , 3130,  0   , ",",                 "# ")
+  addCase(3145,callem  , 3130,  0   , "(",                 "# ")
+  addCase(3145,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3145,emit    , 3150,  0   , "<",                 "# ")
+  addCase(3145,emit    , 3150,  0   , ">",                 "# ")
+  addCase(3145,emit    , 3145,  0   , "is",                "# ")
+  addCase(3145,emit    , 3145,  0   , "not",               "# ")
+  addCase(3145,emit    , 3145,  0   , "null",              "# ")
+  addCase(3145,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3150,emit    , 3150,  0   , "=",                 "# ")
+  addCase(3150,emit    , 3150,  0   , ">",                 "# ")
+  addCase(3150,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3150,emit    , 3145,  0   , "<value>",           "# ")
+
+# execute
+
+  addCase(3200,repl    , 3205,  0   , "exec",              "perform")
+  addCase(3200,repl    , 3205,  0   , "execute",           "perform")
+
+  addCase(3205,emit    , 3210,  0   , "(",                 "# ")
+  addCase(3205,emit    , 3220,  0   , "sp_executesql",     "# ")
+  addCase(3205,drop    , 3205,  UNSP, "sys",               "# ")
+  addCase(3205,drop    , 3205,  0   , ".",                 "# ")
+  addCase(3205,repl    , 3270,  UNSP, "sp_addextendedproperty", "0")
+  addCase(3205,procref , 3240,  0   , "<value>",           "# function exec")
+
+  addCase(3210,emit    , 3215,  0   , "<value>",           "# string exec")
+
+  addCase(3215,emit    , 3210,  0   , "+",                 "# ")
+  addCase(3215,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(3220,isrt    , 3225,  0   , "(",                 "# ")
+
+  addCase(3225,drop    , 3225,  0   , "_statement",        "# ")
+  addCase(3225,emit    , 3230,  0   , "_sql",              "# ")
+  addCase(3225,drop    , 3225,  0   , "=",                 "# ")
+  addCase(3225,dump    , 3230,  0   , "<value>",           "# string exec")
+
+  addCase(3230,isrt    , 3235,  0   , ")",                 "# ")
+
+  addCase(3235,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3240,emit    , 3205,  0   , "=",                 "# ")
+  addCase(3240,emit    , 3205,  0   , ".",                 "# ")
+  addCase(3240,procref , 3245,  1   , "<any>",             "# ")
+
+  addCase(3245,repl    , 3250,  0   , "go",                ")")
+  addCase(3245,drop    , 3255,  0   , "(",                 "# ")
+  addCase(3245,jump    , 3255,  0   , "<any>",             "# ")
+
+  addCase(3250,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3255,emit    , 3260,  0   , "<value>",           "# ")
+
+  addCase(3260,drop    , 3260,  UNSP, "output",            "# ")
+  addCase(3260,emit    , 3255,  0   , ",",                 "# ")
+  addCase(3260,emit    , 3255,  0   , "=",                 "# ")
+  addCase(3260,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3260,isrt    , 3265,  0   , ")",                 "# ")
+
+  addCase(3265,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3270,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3270,drop    , 3270,  0   , "<value>",           "# ")
+
+# insert
+
+  addCase(3300,emit    , 3305,  0   , "insert",            "############ insert")
+
+  addCase(3305,emit    , 3310,  0   , "into",              "############ insert into ")
+  addCase(3305,call    , 3360,  0   , "top",               "# unsupported")
+  addCase(3305,isrt    , 3310,  MSNG, "into",              "# missing into")
+
+  addCase(3310,drop    , 3310,  SERR, ".",                 "############ insert table")
+  addCase(3310,tabtest , 3315,  0   , "<value>",           "# table name ")
+
+  addCase(3315,emit    , 3330,  0   , "values",            "############ values ")
+  addCase(3315,emit    , 3310,  0   , ".",                 "# schema.table")
+  addCase(3315,call    , 1400,  3335, "select",            "# insert select")
+  addCase(3315,callem  , 3320,  3330, "(",                 "# column list")
+  addCase(3315,repl    , 3340,  0   , "exec",              "select")
+
+  addCase(3320,drop    , 3320,  SERR, ".",                 "############ column list")
+  addCase(3320,repl    , 3325,  0   , "user",              "\"user\"")
+  addCase(3320,repl    , 3325,  0   , "offset",            "\"offset\"")
+  addCase(3320,emit    , 3325,  0   , "<value>",           "# col name")
+
+  addCase(3325,emit    , 3320,  0   , ",",                 "# list")
+  addCase(3325,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(3330,emit    , 3330,  0   , "-",                 "############ value list")
+  addCase(3330,call    , 1400,  3335, "select",            "# ")
+  addCase(3330,drop    , 3330,  SERR, ".",                 "# ")
+  addCase(3330,callem  , 3330,  3335, "(",                 "# ")
+  addCase(3330,emit    , 3330,  0   , "=",                 "# >= ")
+  addCase(3330,repl    , 3340,  0   , "exec",              "select")
+  addCase(3330,call    , 1630,  3335, "case",              "# ")
+  addCase(3330,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3330,escape  , 3335,  0   , "<value>",           "# ")
+
+  addCase(3335,emit    , 3330,  0   , ",",                 "############ value operator")
+  addCase(3335,emit    , 3330,  0   , "*",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "/",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "?",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "+",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "-",                 "# ")
+  addCase(3335,emit    , 3330,  0   , ".",                 "# ")
+  addCase(3335,emit    , 3330,  0   , ">",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "<",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "=",                 "# ")
+  addCase(3335,emit    , 3330,  0   , "and",               "# ")
+  addCase(3335,emit    , 3330,  0   , "as",                "# ")
+  addCase(3335,emit    , 3330,  0   , "in",                "# ")
+  addCase(3335,callem  , 3330,  0   , "(",                 "# function call")
+  addCase(3335,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3335,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3340,emit    , 3345,  0   , "<value>",           "############ exec function")
+
+  addCase(3345,emit    , 3340,  0   , ".",                 "############ exec parms ")
+  addCase(3345,emit    , 3350,  0   , "(",                 "# ")
+  addCase(3345,isrt    , 3350,  MSNG, "(",                 "# ")
+
+  addCase(3350,emit    , 3355,  0   , "<value>",           "# ")
+
+  addCase(3355,emit    , 3350,  0   , ",",                 "############ exec list")
+  addCase(3355,emit    , 3375,  0   , ")",                 "# ")
+  addCase(3355,isrt    , 3375,  MSNG, ")",                 "############ missing ")
+
+  addCase(3360,drop    , 3365,  0   , "top",               "############ top list ")
+
+  addCase(3365,drop    , 3370,  0   , "(",                 "# ")
+
+  addCase(3370,drop    , 3375,  0   , ")",                 "# ")
+  addCase(3370,drop    , 3370,  0   , "<value>",           "# ")
+
+  addCase(3375,skip    , 0   ,  0   , "<any>",             "# ")
+
+# return
+
+  addCase(3400,emit    , 3405,  0   , "return",            "############ return ")
+
+  addCase(3405,drop    , 3420,  0   , "select",            "# ")
+  addCase(3405,call    , 2840,  3430, "convert",           "# ")
+  addCase(3405,call    , 3410,  3430, "(",                 "# ")
+  addCase(3405,emit    , 3405,  0   , "-",                 "# ")
+  addCase(3405,prmtest , 0   ,  1   , "<key>",             "# ")
+  addCase(3405,prmtest , 3430,  0   , "<value>",           "# ")
+
+  addCase(3410,drop    , 3415,  0   , "(",                 "# ")
+
+  addCase(3415,repl    , 1410,  UNSP, "select",            "query select (select ")
+  addCase(3415,isrt    , 3405,  0   , "(",                 "# ")
+
+  addCase(3420,isrt    , 3425,  0   , "query select",      "# ")
+
+  addCase(3425,call    , 1410,  3430, "<any>",             "# ")
+
+  addCase(3430,rtnem   , 0   ,  0   , ")",                 "# return expression")
+  addCase(3430,callem  , 3405,  0   , "(",                 "# ")
+  addCase(3430,emit    , 3405,  0   , ",",                 "# ")
+  addCase(3430,emit    , 3405,  0   , ".",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "/",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "?",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "+",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "-",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "*",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "%",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "=",                 "# ")
+  addCase(3430,emit    , 3405,  0   , "or",                "# ")
+  addCase(3430,emit    , 3405,  0   , "and",               "# ")
+  addCase(3430,emit    , 3430,  0   , "is",                "# ")
+  addCase(3430,emit    , 3430,  0   , "not",               "# ")
+  addCase(3430,emit    , 3430,  0   , "null",              "# ")
+  addCase(3430,skip    , 0   ,  0   , "<any>",             "# ")
+
+# update
+
+  addCase(3500,emit    , 3505,  0   , "update",            "############ update")
+
+  addCase(3505,emit    , 3510,  0   , "<value>",           "# table")
+
+  addCase(3510,emit    , 3505,  0   , ".",                 "# ")
+  addCase(3510,emit    , 3515,  0   , "set",               "# ")
+
+  addCase(3515,repl    , 3520,  0   , "user",              "\"user\"")
+  addCase(3515,repl    , 3520,  0   , "offset",            "\"offset\"")
+  addCase(3515,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3515,colsym  , 3520,  0   , "<symbol>",          "# ")
+  addCase(3515,emit    , 3520,  0   , "<value>",           "# ")
+
+  addCase(3520,emit    , 3515,  0   , ".",                 "# ")
+  addCase(3520,emit    , 3525,  0   , "=",                 "# ")
+  addCase(3520,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3520,skip    , 0   ,  0   , "<key>",             "# ")
+
+  addCase(3525,callem  , 3530,  0   , "(",                 "# ")
+  addCase(3525,call    , 1630,  3540, "case",              "# ")
+  addCase(3525,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3525,emit    , 3540,  0   , "<value>",           "# set value")
+
+  addCase(3530,call    , 1400,  3540, "select",            "# update select ")
+  addCase(3530,emit    , 3540,  0   , "<value>",           "# ")
+
+  addCase(3535,emit    , 3555,  0   , "on",                "############ from alias ")
+  addCase(3535,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3535,emit    , 3535,  0   , "<value>",           "# alias")
+
+  addCase(3540,emit    , 3515,  0   , ",",                 "############ set value operator ")
+  addCase(3540,emit    , 3525,  0   , ".",                 "# ")
+  addCase(3540,emit    , 3525,  0   , "+",                 "# ")
+  addCase(3540,emit    , 3525,  0   , "-",                 "# ")
+  addCase(3540,emit    , 3525,  0   , "/",                 "# ")
+  addCase(3540,emit    , 3525,  0   , "?",                 "# ")
+  addCase(3540,emit    , 3525,  0   , "*",                 "# ")
+  addCase(3540,emit    , 3545,  0   , "from",              "# ")
+  addCase(3540,emit    , 3555,  0   , "where",             "# ")
+  addCase(3540,callem  , 3545,  0   , "(",                 "# ")
+  addCase(3540,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3540,emit    , 3555,  0   , "on",                "# ")
+  addCase(3540,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3540,emit    , 3540,  0   , "<value>",           "# ")
+
+  addCase(3545,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3545,callem  , 3545,  3550, "(",                 "# ")
+  addCase(3545,call    , 1400,  3540, "select",            "# ")
+  addCase(3545,emit    , 3545,  0   , "-",                 "# ")
+  addCase(3545,emit    , 3550,  0   , "<value>",           "# function parms")
+
+  addCase(3550,emit    , 3545,  0   , ",",                 "# ")
+  addCase(3550,emit    , 3545,  0   , ".",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "/",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "?",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "?",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "+",                 "# ")
+  addCase(3550,emit    , 3585,  0   , "inner",             "# ")
+  addCase(3550,emit    , 3545,  0   , "-",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "*",                 "# ")
+  addCase(3550,emit    , 3545,  0   , "as",                "# ")
+  addCase(3550,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3550,callem  , 3545,  3550, "(",                 "# ")
+  addCase(3550,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3550,emit    , 3550,  0   , "<value>",           "# table alias")
+
+  addCase(3555,emit    , 3555,  0   , "current",           "# ")
+  addCase(3555,emit    , 3555,  0   , "of",                "# ")
+  addCase(3555,emit    , 1410,  0   , "select",            "# ")
+  addCase(3555,emit    , 3555,  0   , "not",               "# ")
+  addCase(3555,callem  , 3555,  3580, "(",                 "# ")
+  addCase(3555,callem  , 1410,  0   , "(",                 "# ")
+  addCase(3555,call    , 1630,  0   , "case",              "# ")
+  addCase(3555,call    , 2840,  3560, "convert",           "# ")
+  addCase(3555,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3555,emit    , 3560,  0   , "<value>",           "# ")
+
+  addCase(3560,emit    , 3555,  0   , ".",                 "# ")
+  addCase(3560,emit    , 3555,  0   , ",",                 "# ")
+  addCase(3560,emit    , 3555,  0   , "like",              "# ")
+  addCase(3560,emit    , 3555,  0   , "as",                "# ")
+  addCase(3560,emit    , 3555,  0   , "or",                "# ")
+  addCase(3560,emit    , 3570,  0   , "in",                "# ")
+  addCase(3560,emit    , 3560,  0   , "is",                "# ")
+  addCase(3560,emit    , 3560,  0   , "not",               "# ")
+  addCase(3560,emit    , 3555,  0   , "and",               "# ")
+  addCase(3560,emit    , 3560,  0   , "exists",            "# ")
+  addCase(3560,emit    , 3555,  0   , "between",           "# ")
+  addCase(3560,emit    , 3580,  0   , "null",              "# ")
+  addCase(3560,emit    , 3565,  0   , "=",                 "# ")
+  addCase(3560,emit    , 3555,  0   , "+",                 "# ")
+  addCase(3560,callem  , 3555,  0   , "(",                 "# ")
+  addCase(3560,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3560,emit    , 3565,  0   , "<",                 "# ")
+  addCase(3560,emit    , 3565,  0   , ">",                 "# ")
+  addCase(3560,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3565,callem  , 3565,  3580, "(",                 "# ")
+  addCase(3565,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3565,emit    , 3555,  0   , "and",               "# ")
+  addCase(3565,call    , 2840,  0   , "convert",           "# ")
+  addCase(3565,emit    , 3565,  0   , "=",                 "# ")
+  addCase(3565,emit    , 3565,  0   , "-",                 "# ")
+  addCase(3565,emit    , 3565,  0   , ">",                 "# ")
+  addCase(3565,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3565,emit    , 3580,  0   , "<value>",           "# ")
+
+  addCase(3570,callem  , 3570,  3580, "(",                 "# in")
+  addCase(3570,call    , 1400,  3580, "select",            "# ")
+  addCase(3570,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3570,emit    , 3575,  0   , "<value>",           "# ")
+
+  addCase(3575,emit    , 3570,  0   , ",",                 "# ")
+  addCase(3575,rtnem   , 0   ,  0   , ")",                 "# ")
+
+  addCase(3580,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3580,emit    , 3555,  0   , "and",               "# ")
+  addCase(3580,emit    , 3555,  0   , "where",             "# ")
+  addCase(3580,emit    , 3555,  0   , "or",                "# ")
+  addCase(3580,emit    , 3585,  0   , "inner",             "# ")
+  addCase(3580,emit    , 3565,  0   , ".",                 "# ")
+  addCase(3580,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3585,emit    , 3585,  0   , "join",              "# ")
+  addCase(3585,emit    , 3555,  0   , "on",                "# ")
+  addCase(3585,emit    , 3585,  0   , "<value>",           "# ")
+
+# use
+
+  addCase(3600,drop    , 3605,  UNSP, "use",               "# ")
+
+  addCase(3605,drop    , 3610,  0   , "<value>",           "# ")
+
+  addCase(3610,isrt    , 3615,  0   , "null",              "# ")
+
+  addCase(3615,skip    , 0   ,  0   , "<any>",             "# ")
+
+# begin
+
+  addCase(3700,drop    , 3705,  0   , "begin",             "# ")
+
+  addCase(3705,repl    , 0   ,  0   , "transaction",       "null;")
+  addCase(3705,repl    , 0   ,  0   , "tran",              "null;")
+  addCase(3705,isrt    , 3710,  0   , "begin ",            "# ")
+
+  addCase(3710,begsta  , 0   ,  0   , "<any>",             "# ")
+
+# end
+
+  addCase(3800,emit    , 3805,  0   , "end",               "# This will be end ")
+
+  addCase(3805,begend  , 3810,  0   , "<any>",             "# End of begin block")
+
+  addCase(3810,skip    , 0   ,  0   , "<any>",             "")
+
+# alter
+
+  addCase(3900,drop    , 3905,  0   , "alter",             "alter table")
+
+  addCase(3905,repl    , 3910,  0   , "table",             "alter table")
+  addCase(3905,repl    , 4290,  0   , "function",          "drop function")
+  addCase(3905,repl    , 4290,  0   , "procedure",         "drop function")
+  addCase(3905,repl    , 4360,  0   , "trigger",           "drop trigger if exists")
+  addCase(3905,repl    , 4420,  0   , "database",          "alter database")
+
+  addCase(3910,emit    , 3915,  0   , "<value>",           "# alter table")
+
+  addCase(3915,emit    , 3910,  0   , ".",                 "# ")
+  addCase(3915,drop    , 3930,  0   , "with",              "# ")
+  addCase(3915,drop    , 3930,  0   , "check",             "# ")
+  addCase(3915,emit    , 3915,  0   , "constraint",        "# ")
+  addCase(3915,drop    , 3995,  0   , "add",               "# ")
+  addCase(3915,emit    , 3915,  0   , "drop",              "# ")
+  addCase(3915,emit    , 3925,  0   , "alter",             "# ")
+  addCase(3915,emit    , 3920,  0   , "column",            "# ")
+  addCase(3915,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3915,emit    , 3945,  0   , "<value>",           "# ")
+
+  addCase(3920,emit    , 3940,  0   , "<value>",           "# alter column  ")
+
+  addCase(3925,emit    , 4310,  0   , "column",            "# alter column ")
+
+  addCase(3930,drop    , 3915,  0   , "check",             "# ")
+  addCase(3930,drop    , 3915,  UNSP, "nocheck",           "# ")
+  addCase(3930,repl    , 3935,  0   , "constraint",        "owner to postgres")
+
+  addCase(3935,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3935,drop    , 3940,  0   , "<value>",           "# ")
+
+  addCase(3940,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3945,emit    , 3945,  0   , "with",              "# ")
+  addCase(3945,emit    , 3945,  0   , "check",             "# ")
+  addCase(3945,emit    , 3945,  0   , "add",               "# ")
+  addCase(3945,emit    , 3950,  0   , "constraint",        "# ")
+  addCase(3945,emit    , 4045,  0   , "column",            "# ")
+  addCase(3945,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3950,emit    , 3955,  0   , "<value>",           "# constraint")
+
+  addCase(3955,emit    , 3955,  0   , "primary",           "# ")
+  addCase(3955,emit    , 3955,  0   , "foreign",           "# ")
+  addCase(3955,drop    , 3955,  0   , "clustered",         "# ")
+  addCase(3955,drop    , 3955,  0   , "nonclustered",      "# ")
+  addCase(3955,emit    , 3955,  0   , "unique",            "# ")
+  addCase(3955,drop    , 3955,  0   , "asc",               "# ")
+  addCase(3955,call    , 1355,  0   , "with",              "# unsupported")
+  addCase(3955,emit    , 3960,  0   , "default",           "# ")
+  addCase(3955,emit    , 3955,  0   , "key",               "# ")
+  addCase(3955,callem  , 3955,  0   , "(",                 "# ")
+  addCase(3955,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3955,emit    , 3980,  0   , "references",        "# ")
+  addCase(3955,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(3955,emit    , 3955,  0   , "<value>",           "# ")
+
+  addCase(3960,emit    , 3965,  0   , "(",                 "# default")
+  addCase(3960,emit    , 3960,  0   , ")",                 "# ")
+  addCase(3960,emit    , 3965,  0   , "for",               "# ")
+  addCase(3960,emit    , 3970,  0   , "1",                 "# ")
+  addCase(3960,emit    , 3970,  0   , "0",                 "# ")
+  addCase(3960,emit    , 3945,  0   , ",",                 "# ")
+  addCase(3960,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3965,emit    , 3965,  0   , "(",                 "# default")
+  addCase(3965,emit    , 3965,  0   , "-",                 "# ")
+  addCase(3965,emit    , 3970,  0   , "<value>",           "# ")
+
+  addCase(3970,emit    , 3970,  0   , ")",                 "# ")
+  addCase(3970,emit    , 3970,  0   , "(",                 "# ")
+  addCase(3970,emit    , 4070,  0   , ",",                 "# ")
+  addCase(3970,emit    , 3975,  0   , "for",               "# ")
+  addCase(3970,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3975,emit    , 3960,  0   , "<value>",           "# ")
+
+  addCase(3980,emit    , 3985,  0   , "<value>",           "# references")
+
+  addCase(3985,emit    , 3990,  0   , ",",                 "# ")
+  addCase(3985,emit    , 3980,  0   , ".",                 "# ")
+  addCase(3985,callem  , 3990,  0   , "(",                 "# ")
+  addCase(3985,emit    , 3985,  0   , "pkey",              "# ")
+  addCase(3985,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(3985,emit    , 3985,  0   , "on",                "# ")
+  addCase(3985,emit    , 3985,  0   , "update",            "# ")
+  addCase(3985,emit    , 3985,  0   , "delete",            "# ")
+  addCase(3985,emit    , 3985,  0   , "cascade",           "# ")
+  addCase(3985,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(3990,emit    , 3985,  0   , "<value>",           "# references")
+
+  addCase(3995,drop    , 4000,  0   , "constraint",        "# add constraint")
+  addCase(3995,drop    , 4100,  0   , "default",           "# add default")
+  addCase(3995,isrt    , 4045,  0   , "add",               "# ")
+
+  addCase(4000,save    , 4005,  0   , "<value>",           "# ")
+
+  addCase(4005,drop    , 4010,  0   , "default",           "# ")
+  addCase(4005,jump    , 4075,  0   , "<any>",             "# ")
+
+  addCase(4010,clear   , 4015,  0   , "<any>",             "# ")
+
+  addCase(4015,drop    , 4020,  0   , "for",               "# ")
+  addCase(4015,save    , 4015,  0   , "<value>",           "# ")
+
+  addCase(4020,isrt    , 4025,  0   , "alter column",      "# ")
+
+  addCase(4025,emit    , 4030,  0   , "<value>",           "# ")
+
+  addCase(4030,isrt    , 4035,  0   , "set default",       "# ")
+
+  addCase(4035,popall  , 4040,  0   , "<any>",             "# ")
+
+  addCase(4040,emit    , 3995,  0   , ",",                 "# ")
+  addCase(4040,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(4045,emit    , 3945,  0   , ",",                 "# ")
+  addCase(4045,drop    , 4100,  0   , "default",           "# ")
+  addCase(4045,repl    , 4050,  0   , "user",              "\"user\"")
+  addCase(4045,repl    , 4050,  0   , "offset",            "\"offset\"")
+  addCase(4045,emit    , 4085,  0   , "primary",           "# primary key")
+  addCase(4045,repl    , 4085,  0   , "foreign",           "foreign")
+  addCase(4045,repl    , 1135,  0   , "check",             "check")
+  addCase(4045,repl    , 4090,  0   , "unique",            "unique")
+  addCase(4045,emit    , 4050,  0   , "<value>",           "# add column")
+
+  addCase(4050,repl    , 4055,  0   , "uniqueidentifier",  "uuid")
+  addCase(4050,repl    , 4055,  0   , "nvarchar",          "varchar")
+  addCase(4050,repl    , 4055,  0   , "ntext",             "text")
+  addCase(4050,repl    , 4055,  0   , "datetime",          "timestamp")
+  addCase(4050,repl    , 4055,  0   , "money",             "numeric(19,4)")
+  addCase(4050,repl    , 4055,  0   , "bit",               "boolean")
+  addCase(4050,emit    , 4055,  0   , "<value>",           "# add type")
+
+  addCase(4055,repl    , 4055,  0   , "bit",               "boolean")
+  addCase(4055,emit    , 4055,  0   , "not",               "# ")
+  addCase(4055,emit    , 4055,  0   , "null",              "# ")
+  addCase(4055,emit    , 4065,  0   , "default",           "# ")
+  addCase(4055,repl    , 4065,  0   , "identity",          "default identity")
+  addCase(4055,drop    , 4060,  UNSP, "collate",           "# ")
+  addCase(4055,callem  , 4065,  0   , "(",                 "# ")
+  addCase(4055,emit    , 4065,  0   , "unique",            "# ")
+  addCase(4055,emit    , 3950,  0   , "constraint",        "# ")
+  addCase(4055,emit    , 3995,  0   , ",",                 "# ")
+  addCase(4055,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(4060,drop    , 4055,  0   , "<value>",           "# collate value ")
+
+  addCase(4065,callem  , 4065,  0   , "(",                 "# ")
+  addCase(4065,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(4065,emit    , 4055,  0   , "not",               "# ")
+  addCase(4065,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(4065,emit    , 4065,  0   , "<value>",           "# ")
+
+  addCase(4070,emit    , 4045,  0   , "add",               "# ")
+  addCase(4070,isrt    , 4045,  MSNG, "add",               "# ")
+
+  addCase(4075,isrt    , 4080,  0   , "add constraint",    "# ")
+
+  addCase(4080,load    , 3955,  0   , "<any>",             "# ")
+
+  addCase(4085,emit    , 4095,  0   , "key",               "# primary key")
+  addCase(4085,isrt    , 4095,  0   , "key",               "# missing key")
+
+  addCase(4090,drop    , 4095,  0   , "key",               "# unique key")
+  addCase(4090,callem  , 4065,  4065, "(",                 "# unique key")
+
+  addCase(4095,drop    , 4065,  UNSP, "nonclustered",      "# ")
+  addCase(4095,callem  , 4065,  4065, "(",                 "# ")
+
+  addCase(4100,isrt    , 4105,  0   , "alter column",      "# new default ")
+
+  addCase(4105,drop    , 4110,  0   , "for",               "# ")
+  addCase(4105,save    , 4105,  0   , "<value>",           "# ")
+
+  addCase(4110,emit    , 4115,  0   , "<value>",           "# colname ")
+
+  addCase(4115,isrt    , 4120,  0   , "set default",       "# ")
+
+  addCase(4120,popall  , 4125,  0   , "<any>",             "# ")
+
+  addCase(4125,skip    , 0   ,  0   , "<any>",             "# ")
+
+# delete
+
+  addCase(4200,emit    , 4205,  0   , "delete",            "############ delete ")
+
+  addCase(4205,emit    , 4210,  0   , "from",              "# ")
+  addCase(4205,drop    , 4205,  UNSP, "<value>",           "# ")
+
+  addCase(4210,emit    , 4215,  0   , "<value>",           "# table")
+
+  addCase(4215,emit    , 4210,  0   , ".",                 "# ")
+  addCase(4215,emit    , 4215,  0   , "inner",             "# ")
+  addCase(4215,emit    , 4215,  0   , "left",              "# ")
+  addCase(4215,emit    , 4215,  0   , "outer",             "# ")
+  addCase(4215,emit    , 4210,  0   , "join",              "# ")
+  addCase(4215,emit    , 4210,  0   , "on",                "# ")
+  addCase(4215,emit    , 4245,  0   , "where",             "# ")
+  addCase(4215,emit    , 4210,  0   , "=",                 "# ")
+  addCase(4215,repl    , 4220,  0   , "from",              "using")
+  addCase(4215,repl    , 4215,  0   , ",",                 "using")
+  addCase(4215,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(4215,emit    , 4215,  0   , "<value>",           "# alias")
+
+  addCase(4220,emit    , 4225,  0   , "<value>",           "# ")
+
+  addCase(4225,emit    , 4225,  UNSP, "left",              "# ")
+  addCase(4225,emit    , 4230,  0   , "inner",             "# ")
+  addCase(4225,emit    , 4230,  UNSP, "outer",             "# ")
+
+  addCase(4230,emit    , 4235,  0   , "join",              "# ")
+
+  addCase(4235,emit    , 4240,  0   , "<value>",           "# using table")
+
+  addCase(4240,emit    , 4245,  0   , "on",                "# ")
+  addCase(4240,drop    , 4240,  0   , "as",                "# ")
+  addCase(4240,emit    , 4240,  0   , "<value>",           "# alias")
+
+  addCase(4245,emit    , 4245,  0   , "=",                 "# ")
+  addCase(4245,callem  , 4245,  4275, "(",                 "# ")
+  addCase(4245,call    , 1400,  0   , "select",            "# ")
+  addCase(4245,emit    , 4245,  0   , ">",                 "# ")
+  addCase(4245,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(4245,emit    , 4250,  0   , "<value>",           "# ")
+
+  addCase(4250,emit    , 4245,  0   , ".",                 "# ")
+  addCase(4250,emit    , 4245,  0   , "=",                 "# ")
+  addCase(4250,emit    , 4245,  0   , ">",                 "# ")
+  addCase(4250,emit    , 4245,  0   , "<",                 "# ")
+  addCase(4250,callem  , 4245,  4250, "(",                 "# ")
+  addCase(4250,repl    , 4245,  0   , "where",             "and")
+  addCase(4250,emit    , 4250,  0   , "not",               "# ")
+  addCase(4250,emit    , 4250,  0   , "is",                "# ")
+  addCase(4250,emit    , 4250,  0   , "null",              "# ")
+  addCase(4250,emit    , 4245,  0   , "like",              "# ")
+  addCase(4250,emit    , 4280,  0   , "in",                "# ")
+  addCase(4250,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(4250,emit    , 4245,  0   , "and",               "# ")
+  addCase(4250,drop    , 4230,  0   , "inner",             "# ")
+  addCase(4250,emit    , 4245,  0   , "or",                "# ")
+  addCase(4250,drop    , 4250,  UNSP, "on",                "# ")
+  addCase(4250,drop    , 4255,  UNSP, "left",              "# ")
+  addCase(4250,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(4250,emit    , 4250,  0   , "<value>",           "# ")
+
+  addCase(4255,drop    , 4260,  UNSP, "outer",             "# ")
+
+  addCase(4260,drop    , 4265,  0   , "join",              "# ")
+
+  addCase(4265,drop    , 4270,  0   , "<value>",           "# ")
+
+  addCase(4270,isrt    , 4250,  0   , "and",               "# ")
+
+  addCase(4275,emit    , 4245,  0   , "and",               "# ")
+  addCase(4275,emit    , 4275,  0   , "is",                "# ")
+  addCase(4275,emit    , 4275,  0   , "null",              "# ")
+  addCase(4275,emit    , 4245,  0   , "or",                "# ")
+  addCase(4275,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(4275,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(4280,callem  , 4280,  4285, "(",                 "# ")
+  addCase(4280,call    , 1400,  4285, "select",            "# ")
+  addCase(4280,emit    , 4285,  0   , "<value>",           "# ")
+
+  addCase(4285,emit    , 4245,  0   , "and",               "# ")
+  addCase(4285,emit    , 4245,  0   , "or",                "# ")
+  addCase(4285,rtnem   , 0   ,  0   , ")",                 "# ")
+  addCase(4285,skip    , 0   ,  0   , "<key>",             "# ")
+  addCase(4285,emit    , 4285,  0   , "<value>",           "# ")
+
+  addCase(4290,procset , 4295,  0   , "<value>",           "# ")
+
+  addCase(4295,procsig , 4300,  0   , "<any>",             "# ")
+
+  addCase(4300,isrt    , 4305,  0   , "; create function ", "# ")
+
+  addCase(4305,procget , 1230,  0   , "<any>",             "# ")
+
+  addCase(4310,colset  , 4315,  0   , "<value>",           "# ")
+
+  addCase(4315,emit    , 4320,  0   , "type",              "# ")
+  addCase(4315,isrt    , 4320,  0   , "type",              "# ")
+
+  addCase(4320,emit    , 4320,  0   , "int",               "# ")
+  addCase(4320,repl    , 4320,  0   , "uniqueidentifier",  "uuid")
+  addCase(4320,repl    , 4320,  0   , "money",             "numeric(19,4)")
+  addCase(4320,repl    , 4320,  0   , "bit",               "boolean")
+  addCase(4320,emit    , 4320,  0   , "varchar",           "# ")
+  addCase(4320,repl    , 4320,  0   , "nvarchar",          "varchar")
+  addCase(4320,repl    , 4320,  0   , "datetime",          "timestamp")
+  addCase(4320,callem  , 4065,  0   , "(",                 "# ")
+  addCase(4320,drop    , 4325,  0   , "not",               "# not null")
+  addCase(4320,drop    , 4345,  0   , "null",              "# null")
+  addCase(4320,skip    , 0   ,  0   , "<any>",             "# ")
+
+  addCase(4325,isrt    , 4330,  0   , ",alter column",     "# ")
+
+  addCase(4330,colget  , 4335,  0   , "<any>",             "# ")
+
+  addCase(4335,isrt    , 4340,  0   , "set not",           "# ")
+
+  addCase(4340,emit    , 4320,  0   , "null",              "# ")
+
+  addCase(4345,isrt    , 4350,  0   , ",alter column",     "# ")
+
+  addCase(4350,colget  , 4355,  0   , "<any>",             "# ")
+
+  addCase(4355,isrt    , 4320,  0   , "drop not null",     "# ")
+
+  addCase(4360,procset , 4365,  0   , "<value>",           "# Trigger")
+
+  addCase(4365,isrt    , 4370,  0   , "on",                "# ")
+
+  addCase(4370,trigprt , 4375,  0   , "<any>",             "# ")
+
+  addCase(4375,isrt    , 4380,  0   , ";drop rule if exists", "# ")
+
+  addCase(4380,procget , 4385,  0   , "<any>",             "# ")
+
+  addCase(4385,isrt    , 4390,  0   , "on",                "# ")
+
+  addCase(4390,trigprt , 4395,  0   , "<any>",             "# ")
+
+  addCase(4395,isrt    , 4400,  0   , ";drop function",    "# ")
+
+  addCase(4400,procget , 4405,  0   , "<any>",             "# ")
+
+  addCase(4405,procsig , 4410,  0   , "<any>",             "# ")
+
+  addCase(4410,isrt    , 4415,  0   , ";create",           "# ")
+
+  addCase(4415,jump    , 1325,  0   , "<any>",             "# ")
+
+  addCase(4420,emit    , 4425,  0   , "<value>",           "# Database")
+
+  addCase(4425,drop    , 2800,  0   , "set",               "# ")
+  addCase(4425,drop    , 4460,  UNSP, "modify",            "# ")
+
+  addCase(4430,emit    , 4430,  0   , ".",                 "# ")
+  addCase(4430,emit    , 4435,  0   , "<value>",           "# ")
+
+  addCase(4435,drop    , 4430,  UNSP, "as",                "# ")
+  addCase(4435,emit    , 4440,  0   , "where",             "# ")
+
+  addCase(4440,emit    , 4440,  0   , "(",                 "# ")
+  addCase(4440,emit    , 4445,  0   , "<value>",           "# ")
+
+  addCase(4445,emit    , 4440,  0   , ".",                 "# ")
+  addCase(4445,emit    , 4450,  0   , "=",                 "# ")
+  addCase(4445,emit    , 4450,  0   , "like",              "# ")
+  addCase(4445,emit    , 4450,  0   , "<",                 "# ")
+
+  addCase(4450,emit    , 4450,  0   , ">",                 "# ")
+  addCase(4450,lower   , 4455,  0   , "<value>",           "# ")
+
+  addCase(4455,emit    , 4440,  0   , "and",               "# ")
+  addCase(4455,emit    , 4440,  0   , "or",                "# ")
+  addCase(4455,rtnem   , 4440,  0   , ")",                 "# ")
+
+  addCase(4460,drop    , 4465,  0   , "file",              "# Modify file")
+
+  addCase(4465,drop    , 4470,  0   , "(",                 "# ")
+
+  addCase(4470,drop    , 4475,  0   , ")",                 "# drop to bracket")
+  addCase(4470,drop    , 4470,  0   , "<any>",             "# ")
+
+  addCase(4475,isrt    , 0   ,  0   , "set owner to postgres;", "# ")

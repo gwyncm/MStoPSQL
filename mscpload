@@ -1,0 +1,39 @@
+#! /bin/bash 
+# MSCPLOAD Copyright (2008) Gwyneth Morrison
+# Load a list of sql files from CWD into postgres
+# Move the sql file to the done directory when done
+
+if [ $# -lt 1 ]
+then
+	echo Usage $0 FILELIST
+	exit 1
+fi
+
+# Clear the log
+
+>errlog
+
+mkdir done 2> /dev/null
+
+# Process all tables where the .sql file exists 
+
+for tab in `cat $1`
+do
+if [ -s ${tab}.sql ]
+then
+	echo "processing $tab" 
+	pcmd < ${tab}.sql > errtmp
+	cat errlog errtmp > err2
+	mv err2 errlog
+	if grep ERROR errtmp
+	then
+		echo Failed
+		rm errtmp
+		exit
+	else
+		echo Successful
+		rm errtmp
+		mv ${tab}.sql done
+	fi
+fi
+done

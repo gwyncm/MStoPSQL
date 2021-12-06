@@ -1,0 +1,27 @@
+#! /bin/bash 
+# MSCPDATA Copyright (2008) Gwyneth Morrison
+# Copy a data table from the server using freebcp
+
+# Load the symbols
+
+. mssymbols
+
+if [ $# -lt 1 ]
+then
+	echo Usage $0 FILELIST
+	exit 1
+fi
+
+mkdir dat 2>/dev/null
+
+for tab  in `cat $1`
+do
+if  echo $tab | grep '-' > /dev/null
+then
+	echo $tab Skipped
+else
+	echo processing $tab
+	rm dat/${tab}.dat 2> /dev/null
+	freebcp $MSPREFIX.$tab out dat/${tab}.dat -S FreeTDS -U $MSUSER -P $MSPASSWD -c -t '' -r '' -O 'set textsize 8192' 2>&1
+fi
+done

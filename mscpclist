@@ -1,0 +1,24 @@
+#! /bin/bash 
+# MSCPCLIST Copyright (2008) Gwyneth Morrison
+# Make a column template for a table
+
+if [ $# -lt 1 ]
+then
+	echo Usage $0 FILELIST
+	exit 1
+fi
+
+mkdir tmp 2> /dev/null
+
+# Process all tables without - in first column
+
+for tab in `cat $1`
+do
+if  echo $tab | grep '-' > /dev/null
+then
+	echo $tab Skipped
+else
+	echo "select * from $tab" | pcmd | tail -n +2 | head -1 | 
+	sed 's/|/,/g' > tmp/$tab.tmp
+fi
+done

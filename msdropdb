@@ -1,0 +1,15 @@
+#! /bin/bash
+# DROPDB Copyright (2008) Gwyneth Morrison
+# Drop a postgress DB 
+# You don't need it but I use it
+
+. mssymbols
+
+if [ $# -lt 1 ]
+then
+	echo Usage $0 DBNAME
+	exit 1
+fi
+DBNAME=$1
+echo dropping database $DBNAME
+$PSQLBIN/dropdb -U $PGUSERNAME $DBNAME

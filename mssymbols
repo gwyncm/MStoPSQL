@@ -1,0 +1,8 @@
+# Define symbols for default environment variables
+
+PGUSERNAME=postgres		# default postgres username
+PSQLBIN=/usr/local/pgsql/bin	# path to postgres bin
+PGDATABASE=postgres		# default postgres database name
+MSPREFIX=dbo			# default MS data table prefix
+MSUSER=sa			# default MS username
+MSPASSWD=			# default MS password

@@ -1,0 +1,188 @@
+TRACE    TRACE        state:      0 line:      2 token: ALTER                                    stmt: ALTER      call
+>> in state 0 line 2 we found "ALTER" and executed a call - token preserved
+DEBUG    CALLSTACK  call : 0  ~  3800
+>> debug says state 0 pushed on the stack and move to state 3800 
+TRACE    TRACE        state:   3800 line:      2 token: ALTER                                    stmt: ALTER      drop
+>> in state 3800 we found alter and it was dropped (function drop) move to 3805
+TRACE    TRACE        state:   3805 line:      2 token: DATABASE                                 stmt: ALTER      repl
+>> in state 3805 we found "DATABASE" which was replaced. (see state table for details)
+TRACE    TRACE        state:   4315 line:      2 token: MyData                                   stmt: ALTER      emit
+>> in state 4315 we found MyData (database name) and we printed it (emit function)
+TRACE    TRACE        state:   4320 line:      2 token: MODIFY                                   stmt: ALTER      drop
+>> in state 4320 we found "MODIFY"  - since postgres does not support this, the token was dropped.
+WARNING  UNSUPPORTED  state:   4355 line:      2 token: MODIFY                                   stmt: ALTER      dropped
+>> a warning was issued 
+TRACE    TRACE        state:   4355 line:      2 token: FILE                                     stmt: ALTER      drop
+TRACE    TRACE        state:   4360 line:      2 token: (                                        stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: NAME                                     stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: =                                        stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: 'MyData'                                 stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: ,                                        stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: SIZE                                     stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: =                                        stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: 154816                                   stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: KB                                       stmt: ALTER      drop
+TRACE    TRACE        state:   4365 line:      2 token: )                                        stmt: ALTER      drop
+>> all the rest of the tokens associated with modify database were dropped
+TRACE    TRACE        state:   4370 line:      3 token: set owner to postgres;                   stmt: ALTER      isrt
+>> since we were in the middle of an alter, we invent a suitable harmless conclusion and insert it here. 
+TRACE    TRACE        state:      0 line:      3 token: GO                                       stmt: GO         procend
+>> in state 0 again, (end of previous statement) we encounter a "GO"
+TRACE    TRACE        state:      0 line:      3 token: GO                                       stmt: GO         begrst
+TRACE    TRACE        state:      0 line:      3 token: GO                                       stmt: GO         begend
+>> This triggers various cleanup functions for begins and proc ends that MS usually leaves dangling
+TRACE    TRACE        state:      0 line:      4 token: ALTER                                    stmt: ALTER      call
+>> new statement "ALTER"
+DEBUG    CALLSTACK  call : 0 0  ~  3800
+>> Call to 3800
+TRACE    TRACE        state:   3800 line:      4 token: ALTER                                    stmt: ALTER      drop
+TRACE    TRACE        state:   3805 line:      4 token: TABLE                                    stmt: ALTER      repl
+>> table replaced with "alter table" here (see state table) there are invalid alters that require "ALTER" to be dropped above
+TRACE    TRACE        state:   3810 line:      4 token: Customer_lookup                          stmt: ALTER      emit
+>> emit table name
+TRACE    TRACE        state:   3815 line:      5 token: ADD                                      stmt: ALTER      drop
+TRACE    TRACE        state:   3895 line:      6 token: add                                      stmt: ALTER      isrt
+>> drop and insert as some "adds" are invalid
+TRACE    TRACE        state:   3945 line:      6 token: PRIMARY                                  stmt: ALTER      emit
+TRACE    TRACE        state:   3985 line:      6 token: KEY                                      stmt: ALTER      emit
+>> valid - emit
+TRACE    TRACE        state:   3995 line:      7 token: NONCLUSTERED                             stmt: ALTER      drop
+WARNING  UNSUPPORTED  state:   3965 line:      7 token: NONCLUSTERED                             stmt: ALTER      dropped
+>> invalid in postgres - dropped and warning issued
+TRACE    TRACE        state:   3965 line:      8 token: (                                        stmt: ALTER      callem
+DEBUG    CALLSTACK  callem : 0 0 3965  ~  3965
+>> bracket triggers a call
+TRACE    TRACE        state:   3965 line:      8 token: PKey                                     stmt: ALTER      emit
+TRACE    TRACE        state:   3965 line:      8 token: )                                        stmt: ALTER      rtnem
+DEBUG    CALLSTACK  rtnem : 0 0  ~  3965
+>> return from bracket call
+TRACE    TRACE        state:   3965 line:      8 token: )                                        stmt: ALTER      traptest
+>> triggers a traptest (catches ends of if statements which MS doesn't report)
+TRACE    TRACE        state:   3965 line:      9 token: ON                                       stmt: ALTER      skip
+DEBUG    CALLSTACK  skip : 0  ~  0
+>> "ALTER" unrecognized here - force a return this is VERY common as MS uses no statement terminators - most statements end this way
+TRACE    TRACE        state:      0 line:      9 token: ON                                       stmt: ALTER      traptest
+>> triggers a traptest
+TRACE    TRACE        state:      0 line:      9 token: ON                                       stmt: ON         drop
+TRACE    TRACE        state:      0 line:      9 token: PRIMARY                                  stmt: PRIMARY    drop
+>> on primary just gets thrown away as it is invalid in postgres
+TRACE    TRACE        state:      0 line:     10 token: GO                                       stmt: GO         procend
+TRACE    TRACE        state:      0 line:     10 token: GO                                       stmt: GO         begrst
+TRACE    TRACE        state:      0 line:     10 token: GO                                       stmt: GO         begend
+>> end of statement triggers
+TRACE    TRACE        state:      0 line:     12 token: SET                                      stmt: SET        call
+DEBUG    CALLSTACK  call : 0 0  ~  2600
+>> new "SET" statement  - I will stop here - see if you can follow the remainder of the example
+>> skip to the bottom to see some additional log entries
+TRACE    TRACE        state:   2600 line:     12 token: SET                                      stmt: SET        drop
+TRACE    TRACE        state:   2700 line:     12 token: ANSI_NULLS                               stmt: SET        drop
+TRACE    TRACE        state:   2905 line:     12 token: set transform_null_equals                stmt: SET        isrt
+TRACE    TRACE        state:   2930 line:     12 token: ON                                       stmt: SET        repl
+TRACE    TRACE        state:   2940 line:     13 token: SET                                      stmt: SET        skip
+DEBUG    CALLSTACK  skip : 0  ~  0
+TRACE    TRACE        state:      0 line:     13 token: SET                                      stmt: SET        traptest
+TRACE    TRACE        state:      0 line:     13 token: SET                                      stmt: SET        call
+DEBUG    CALLSTACK  call : 0 0  ~  2600
+TRACE    TRACE        state:   2600 line:     13 token: SET                                      stmt: SET        drop
+TRACE    TRACE        state:   2700 line:     13 token: ANSI_PADDING                             stmt: SET        drop
+WARNING  INFORMATION  state:   2905 line:     13 token: ANSI_PADDING                             stmt: SET        dropped
+TRACE    TRACE        state:   2905 line:     13 token: set transform_null_equals                stmt: SET        isrt
+TRACE    TRACE        state:   2930 line:     13 token: ON                                       stmt: SET        repl
+TRACE    TRACE        state:   2940 line:     14 token: GO                                       stmt: SET        skip
+DEBUG    CALLSTACK  skip : 0  ~  0
+TRACE    TRACE        state:      0 line:     14 token: GO                                       stmt: SET        traptest
+TRACE    TRACE        state:      0 line:     14 token: GO                                       stmt: GO         procend
+TRACE    TRACE        state:      0 line:     14 token: GO                                       stmt: GO         begrst
+TRACE    TRACE        state:      0 line:     14 token: GO                                       stmt: GO         begend
+TRACE    TRACE        state:      0 line:     16 token: CREATE                                   stmt: CREATE     call
+DEBUG    CALLSTACK  call : 0 0  ~  9999
+TRACE    TRACE        state:   9999 line:     16 token: CREATE                                   stmt: CREATE     emit
+TRACE    TRACE        state:   1000 line:     16 token: FUNCTION                                 stmt: CREATE     emit
+TRACE    TRACE        state:   1210 line:     16 token: UDF_GetCustomers                         stmt: CREATE     procset
+TRACE    TRACE        state:   1215 line:     17 token: (                                        stmt: CREATE     drop
+TRACE    TRACE        state:   1215 line:     17 token: )                                        stmt: CREATE     drop
+TRACE    TRACE        state:   1250 line:     18 token: AS                                       stmt: CREATE     drop
+TRACE    TRACE        state:   1250 line:     19 token: BEGIN                                    stmt: CREATE     prmisrt
+TRACE    TRACE        state:   1255 line:     19 token: BEGIN                                    stmt: CREATE     call
+DEBUG    CALLSTACK  call : 0 0 80  ~  0
+TRACE    TRACE        state:      0 line:     19 token: BEGIN                                    stmt: BEGIN      jump
+TRACE    TRACE        state:   3600 line:     19 token: BEGIN                                    stmt: BEGIN      drop
+TRACE    TRACE        state:   3605 line:     20 token: begin                                    stmt: BEGIN      isrt
+TRACE    TRACE        state:   3610 line:     20 token: DECLARE                                  stmt: BEGIN      begsta
+DEBUG    CALLSTACK  begin.start : 0 0 80 3610  ~  0
+TRACE    TRACE        state:      0 line:     20 token: DECLARE                                  stmt: DECLARE    begdcl
+DEBUG    CALLSTACK  begin.declare : 0 0 80 3610 0  ~  2200
+TRACE    TRACE        state:   2200 line:     20 token: _Total                                   stmt: DECLARE    save
+TRACE    TRACE        state:   2205 line:     20 token: int                                      stmt: DECLARE    jump
+TRACE    TRACE        state:   2225 line:     20 token: _Total                                   stmt: DECLARE    load
+TRACE    TRACE        state:   2230 line:     20 token: int                                      stmt: DECLARE    emit
+TRACE    TRACE        state:   2230 line:     21 token: SELECT                                   stmt: DECLARE    skip
+DEBUG    CALLSTACK  skip : 0 0 80 3610  ~  0
+TRACE    TRACE        state:      0 line:     21 token: SELECT                                   stmt: DECLARE    traptest
+TRACE    TRACE        state:      0 line:     21 token: begin                                    stmt: DECLARE    inserted
+TRACE    TRACE        state:      0 line:     21 token: SELECT                                   stmt: SELECT     call
+DEBUG    CALLSTACK  call : 0 0 80 3610 0  ~  1400
+TRACE    TRACE        state:   1400 line:     21 token: SELECT                                   stmt: SELECT     emit
+TRACE    TRACE        state:   1402 line:     21 token: TOP                                      stmt: SELECT     call
+DEBUG    CALLSTACK  call : 0 0 80 3610 0 70  ~  1405
+TRACE    TRACE        state:   1405 line:     21 token: TOP                                      stmt: SELECT     drop
+TRACE    TRACE        state:   1445 line:     21 token: 1                                        stmt: SELECT     prtlim
+TRACE    TRACE        state:   1450 line:     21 token: _Total                                   stmt: SELECT     jump
+TRACE    TRACE        state:   1405 line:     21 token: _Total                                   stmt: SELECT     savinto
+TRACE    TRACE        state:   1425 line:     21 token: =                                        stmt: SELECT     drop
+TRACE    TRACE        state:   1405 line:     21 token: MaxCustomers                             stmt: SELECT     procref
+TRACE    TRACE        state:   1455 line:     21 token: FROM                                     stmt: SELECT     prtinto
+TRACE    TRACE        state:   1485 line:     21 token: FROM                                     stmt: SELECT     emit
+TRACE    TRACE        state:   1485 line:     21 token: CustomerList                             stmt: SELECT     procref
+TRACE    TRACE        state:   1535 line:     22 token: SET                                      stmt: SELECT     skip
+DEBUG    CALLSTACK  skip : 0 0 80 3610 0  ~  70
+TRACE    TRACE        state:     70 line:     22 token: SET                                      stmt: SELECT     prtlim
+TRACE    TRACE        state:     70 line:     22 token: SET                                      stmt: SELECT     traptest
+TRACE    TRACE        state:     70 line:     22 token: SET                                      stmt: SELECT     prtlim
+TRACE    TRACE        state:     71 line:     22 token: SET                                      stmt: SELECT     skip
+DEBUG    CALLSTACK  skip : 0 0 80 3610  ~  0
+TRACE    TRACE        state:      0 line:     22 token: SET                                      stmt: SELECT     traptest
+TRACE    TRACE        state:      0 line:     22 token: SET                                      stmt: SET        call
+DEBUG    CALLSTACK  call : 0 0 80 3610 0  ~  2600
+TRACE    TRACE        state:   2600 line:     22 token: SET                                      stmt: SET        drop
+TRACE    TRACE        state:   2700 line:     22 token: QUOTED_IDENTIFIER                        stmt: SET        drop
+WARNING  INFORMATION  state:   2900 line:     22 token: QUOTED_IDENTIFIER                        stmt: SET        dropped
+TRACE    TRACE        state:   2900 line:     22 token: set escape_string_warning                stmt: SET        isrt
+TRACE    TRACE        state:   2930 line:     22 token: ON                                       stmt: SET        repl
+TRACE    TRACE        state:   2940 line:     23 token: RETURN                                   stmt: SET        skip
+DEBUG    CALLSTACK  skip : 0 0 80 3610  ~  0
+TRACE    TRACE        state:      0 line:     23 token: RETURN                                   stmt: SET        traptest
+TRACE    TRACE        state:      0 line:     23 token: RETURN                                   stmt: RETURN     call
+DEBUG    CALLSTACK  call : 0 0 80 3610 0  ~  3290
+TRACE    TRACE        state:   3290 line:     23 token: RETURN                                   stmt: RETURN     emit
+TRACE    TRACE        state:   3300 line:     23 token: (                                        stmt: RETURN     call
+DEBUG    CALLSTACK  call : 0 0 80 3610 0 3325  ~  3305
+TRACE    TRACE        state:   3305 line:     23 token: (                                        stmt: RETURN     drop
+TRACE    TRACE        state:   3310 line:     23 token: (                                        stmt: RETURN     isrt
+TRACE    TRACE        state:   3300 line:     23 token: _Total                                   stmt: RETURN     prmtest
+TRACE    TRACE        state:   3325 line:     23 token: )                                        stmt: RETURN     rtnem
+DEBUG    CALLSTACK  rtnem : 0 0 80 3610 0  ~  3325
+TRACE    TRACE        state:   3325 line:     23 token: )                                        stmt: RETURN     traptest
+TRACE    TRACE        state:   3325 line:     24 token: END                                      stmt: RETURN     skip
+DEBUG    CALLSTACK  skip : 0 0 80 3610  ~  0
+TRACE    TRACE        state:      0 line:     24 token: END                                      stmt: RETURN     traptest
+TRACE    TRACE        state:      0 line:     24 token: END                                      stmt: END        jump
+TRACE    TRACE        state:   3700 line:     24 token: END                                      stmt: END        emit
+>> end of processing
+REPORT   TOTAL        state:   3705 line:     25 token: STATEMENTS                               stmt: END        16
+>> 16 statements processed
+REPORT   TOTAL        state:   3705 line:     25 token: ERRORS                                   stmt: END        0
+>> zero errors encounterd - the only errors that occur are invalid token and stack faults theres are state table programming errors
+>> everything else is a warning - see summary below
+WARNING  WARNSUMMARY  state:   3705 line:     25 token:  INFORMATION -2900-QUOTED_IDENTIFIER     stmt: END        22
+>> this entry is a summary of the "2900-QUOTED_IDENTIFIER" warning - It is INFORMATIONAL as it is not relevent in postgres 
+>> it occured in line 26 and that line is reproduced below - it occured 22 times in total
+SOURCELINE SET QUOTED_IDENTIFIER ON
+ WARNING  WARNSUMMARY  state:   3705 line:     25 token:  INFORMATION -2905-ANSI_PADDING          stmt: END        13
+SOURCELINE SET ANSI_PADDING ON
+ WARNING  WARNSUMMARY  state:   3705 line:     25 token:  UNSUPPORTED -3965-NONCLUSTERED          stmt: END        7
+>> an unsupported error is a construct that may be an issue but is unsupported in postgres "NONCLUSTERED" is unsupported
+SOURCELINE 	NONCLUSTERED
+ WARNING  WARNSUMMARY  state:   3705 line:     25 token:  UNSUPPORTED -4355-MODIFY                stmt: END        2
+SOURCELINE ALTER DATABASE [MyData] MODIFY FILE (NAME = 'MyData', SIZE = 154816 KB)
+ 

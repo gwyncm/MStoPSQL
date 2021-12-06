@@ -1,0 +1,63 @@
+begend	begin.end		# end of begin block
+begtbl	begin.table		# create begin block for table
+begsta	begin.start		# start a source begin block		
+begdcl	begin.declare		# create begin block for declare 
+
+callem	call.emit		# emit token and call
+call	call.keep		# keep token and call
+
+escape	move.escape		# escape quotes and emit	
+lower	move.lower		# lower case amd emit
+
+drop	move.drop		# drop token and move
+dump	move.dump		# dump token and move
+emit	move.emit		# emit token and move
+isrt	move.isrt		# isrt token and move
+jump 	move.keep		# jump token and move
+join	move.join		# join token and move
+repl	move.repl		# repl token and move
+trap	trap.keep		# keep token and trap
+skip	ret.keep		# keep token and return
+rtnem	ret.emit		# emit token and return
+
+save	stack.push		# save to stack
+load	stack.first		# load first from stack
+pushalt	stack.pushalt		# replace and push
+popall	stack.list		# list all from stack
+clear	stack.clear		# clear stack
+frame	move.frame		# set a token stack frame
+
+parmadd	parm.add		# add parm to list		
+parmnew	parm.new		# parameter create		
+prmisrt	parm.isrt		# insert parm list		
+parmout	parm.out		# parameter set output		
+parmrep	parm.retype		# replace token set type	
+prmsize	parm.size		# set parameter size		
+prmtype	parm.type		# set parameter type		
+prmtest	parm.test		# drop token if out
+
+prtansi	var.ansi		# save/print ansi setting 		
+prtlim	var.limit		# save/print limit		
+subsel	var.subsel		# save subsel setting
+prtas	var.printas		# print as if not in subselect 		
+prtinto	print.into		# load into list
+lodinto load.into		# load first into token
+savinto save.into		# save into token
+convbr	conv.brack		# convert bracket
+
+procend	proc.end		# closes proc			
+procsig	proc.emitsig		# insert proc signature		
+procset	proc.setname		# emit and log procname		
+procget	proc.getname		# emit logged procname		
+procret	proc.rettype		# drop and log return type	
+procrep	proc.type		# replace set return type	
+
+tabname	tab.setname		# emit and log table name	
+tabdrop	tab.drop		# emit and log table drop	
+colset	tab.setcol		# emit and log column name	
+colget	tab.getcol		# print logged column name	
+
+triggen	trig.gen		# generates a trigger 		
+triglog	trig.parm		# log trigger parameters	
+trigprt	trig.print		# print trigger table entry
+trighed	trig.head		# print trigger header		
